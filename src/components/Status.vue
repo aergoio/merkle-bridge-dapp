@@ -1,17 +1,17 @@
 <template>
   <div>
     <v-form ref="form" v-model="valid" lazy-validation>
-      <v-row class="pa-0 ma-0" align="center">
-        <v-combobox
+      <v-row align="center" no-gutters>
+        <v-col>
+        <v-text-field
           v-model="receiver"
           :rules="[validateReceiver]"
-          :items="loadSuggestItems()"
           label="To Address"
           required
-          hide-no-data
           clearable
-        ></v-combobox>
-        <v-btn color="primary" :disabled="valid === false" @click="search">Search</v-btn>
+        ></v-text-field>
+        </v-col>
+        <v-col md="auto"><v-btn color="primary" :disabled="valid === false" @click="search">Search</v-btn></v-col>
       </v-row>
 
       <v-container v-if="verifiedReceiver" class="py-0">
@@ -95,7 +95,7 @@
 </template>
 
 <script>
-import { validateAddress, loadReceivers, applyDecimals } from "./common/Utils";
+import { validateAddress, applyDecimals } from "./common/Utils";
 import { ethToAergo, utils, aergoToEth } from "eth-merkle-bridge-js";
 import { AergoClient, GrpcWebProvider } from "@herajs/client";
 import Web3 from "web3";
@@ -241,9 +241,6 @@ export default {
             console.error(errs)
           });
       }
-    },
-    loadSuggestItems() {
-      return loadReceivers();
     }
   }
 };

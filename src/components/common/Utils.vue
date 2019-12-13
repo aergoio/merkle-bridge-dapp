@@ -26,33 +26,6 @@ export function validateAddress(netType, address) {
   return "unknown network type " + netType;
 }
 
-export function loadReceivers() {
-  const jsonItems = localStorage.getItem("savedReceivers");
-  if (jsonItems) {
-    return JSON.parse(jsonItems);
-  }
-  return [];
-}
-
-export function saveReceiver(receiver) {
-  let parsedItems = [];
-  const jsonItems = localStorage.getItem("savedReceivers");
-
-  if (jsonItems) {
-    parsedItems = JSON.parse(jsonItems);
-  }
-  //TODO prevent duplicate
-  // push item to first
-  parsedItems.unshift(receiver);
-
-  // remove oldest history item
-  if (parsedItems.length > 5) {
-    parsedItems.pop();
-  }
-
-  localStorage.setItem("savedReceivers", JSON.stringify(parsedItems));
-}
-
 export function applyDecimals(amount, decimals, isPositive) {
   //convert other types to string
   if (amount instanceof Amount) {

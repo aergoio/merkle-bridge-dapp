@@ -209,7 +209,6 @@ import { ethToAergo, aergoToEth, utils } from "eth-merkle-bridge-js"; //aergoToE
 import { web3 } from "./common/Web3Loader";
 import {
   validateAddress,
-  saveReceiver,
   sendTxToAergoConnect,
   applyDecimals
 } from "./common/Utils";
@@ -550,8 +549,6 @@ export default {
       this.sendDialog.open = false;
       if (this.sendDialog.status === this.SUCCESS) {
         this.$emit("stepping", "next");
-        // update localstorage
-        saveReceiver(this.receiver);
       }
     },
     validateReceiver(v) {
