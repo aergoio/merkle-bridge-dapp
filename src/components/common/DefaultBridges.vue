@@ -79,7 +79,7 @@ export const defaultBridges = [
         type: "ethereum",
         networkVersion: "3",
         endpoint: "127.0.0.2:3000",
-        scan: "https://ropsten.etherscan.io/address/"
+        scan: "https://ropsten.etherscan.io/search?q="
       },
       contract: {
         id: "0xef27c1d9b1464e0edbcc69b429b872eb89877bd9",
@@ -117,7 +117,7 @@ export const defaultBridges = [
         type: "ethereum",
         networkVersion: "3",
         endpoint: "127.0.0.2:3000",
-        scan: "https://ropsten.etherscan.io/address/"
+        scan: "https://ropsten.etherscan.io/search?q="
       },
       contract: { id: "0xef27c1d9b1464e0edbcc69b429b872eb89877bd9" },
       asset: {

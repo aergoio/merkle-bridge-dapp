@@ -108,7 +108,6 @@ export default {
   props: ["fromBridge", "toBridge"],
   data: () => ({
     receiver: "",
-    receiverRules: [v => !!v || "Address is required"],
     valid: false,
     verifiedAmountDecimalStr: "0",
     underVerifyAmountDecimalStr: "0",

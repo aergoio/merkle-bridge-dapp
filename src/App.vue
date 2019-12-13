@@ -90,11 +90,10 @@
             </v-stepper-content>
           </div>
           <div v-if="step > 4">
-            Finish.
-            다른걸 진행하려면 아래 버튼을 눌러라.
-            <br />
-            <v-btn @click="step=1" color="primary">Select Bridge</v-btn>or
-            <v-btn @click="step=2" color="primary">Transfer Again</v-btn>
+            The asset is transfered successfully. <br/>
+            To send another asset, press the button below.
+            <br /><br />
+            <v-btn @click="step=1" color="primary">Select Bridge</v-btn>
           </div>
         </v-stepper>
         
