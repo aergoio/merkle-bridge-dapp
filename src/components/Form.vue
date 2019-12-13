@@ -129,14 +129,19 @@
 
     <!-- send result dialog -->
     <v-row justify="center">
-      <v-dialog persistent v-model="sendDialog.open" max-width="380">
+      <v-dialog persistent v-model="sendDialog.open" max-width="450">
         <v-card>
-          <v-card-title class="headline">Send Tx: {{sendDialog.status}}</v-card-title>
-          <v-card-text>{{sendDialog.message}}</v-card-text>
-          <v-card-text>
-            <a
-              v-if="sendDialog.blockHash"
-              :href="bridge.net.scan + sendDialog.blockHash"
+          <v-card-title>Send Tx: {{sendDialog.status}}</v-card-title>
+          <v-card-text class="text-left">{{sendDialog.message}}</v-card-text>
+           <v-card-text v-if="sendDialog.txHash" class="text-left">
+             <div class="subtitle-1 black--text">Tx Hash</div>
+            <a :href="bridge.net.scan + sendDialog.txHash"
+              target="_blank"
+            >{{sendDialog.txHash}}</a>
+          </v-card-text>
+          <v-card-text v-if="sendDialog.blockHash" class="text-left">
+            <div class="subtitle-1 black--text">Included in Block</div>
+            <a :href="bridge.net.scan + sendDialog.blockHash"
               target="_blank"
             >{{sendDialog.blockHash}}</a>
           </v-card-text>
@@ -154,14 +159,19 @@
     </v-row>
     <!-- increase approve dialog -->
     <v-row justify="center">
-      <v-dialog persistent v-model="approveDialog.open" max-width="380">
+      <v-dialog persistent v-model="approveDialog.open" max-width="450">
         <v-card>
           <v-card-title>Request Approval: {{approveDialog.status}}</v-card-title>
-          <v-card-text>{{approveDialog.message}}</v-card-text>
-          <v-card-text>
-            <a
-              v-if="approveDialog.blockHash"
-              :href="bridge.net.scan + approveDialog.blockHash"
+          <v-card-text class="text-left">{{approveDialog.message}}</v-card-text>
+           <v-card-text v-if="approveDialog.txHash" class="text-left">
+             <div class="subtitle-1 black--text">Tx Hash</div>
+            <a :href="bridge.net.scan + approveDialog.txHash"
+              target="_blank"
+            >{{approveDialog.txHash}}</a>
+          </v-card-text>
+          <v-card-text v-if="approveDialog.blockHash" class="text-left">
+            <div class="subtitle-1 black--text">Included in Block</div>
+            <a :href="bridge.net.scan + approveDialog.blockHash"
               target="_blank"
             >{{approveDialog.blockHash}}</a>
           </v-card-text>
@@ -230,13 +240,15 @@ export default {
       open: false,
       status: "",
       message: "",
-      blockHash: ""
+      blockHash: "",
+      txHash: ""
     },
     approveDialog: {
       open: false,
       status: "",
       message: "",
-      blockHash: ""
+      blockHash: "",
+      txHash: ""
     }
   }),
   created() {
@@ -374,13 +386,23 @@ export default {
       dialog.status = this.WAIT;
       dialog.blockHash = null;
       dialog.message = msg;
+      dialog.txHash = '';
       dialog.open = true;
       try {
+        // metamask returns tx hash after signing tx
+        if(receipt.on) {
+        receipt.on('transactionHash', function(hash){
+          dialog.message = 'Wait transaction confirming';
+          dialog.txHash = hash;
+        });
+        }
+
+        // wait the tx is confirmed
         const response = await receipt;
 
         dialog.status = this.SUCCESS;
         dialog.message =
-          "The transaction has been confirmed and included in block; ";
+          "The transaction has been confirmed and included in block";
         if (this.bridge.net.type === "aergo") {
           dialog.blockHash = response.blockhash;
         } else {
@@ -389,11 +411,13 @@ export default {
       } catch (err) {
         dialog.status = this.FAIL;
         dialog.message = err;
+        dialog.txHash = '';
       }
     },
     clickApproveIcon() {
       this.checkApprovedAmount = false;
-      if (this.$refs.form.validate()) {
+       
+      if (this.$refs.form.validate() && this.amount.compare(this.approvedAmount) == 1) {
         this.approveDialog.status = this.NONE;
         this.approveDialog.open = true; //open dialog and ask
         this.approveDialog.message =
@@ -423,7 +447,7 @@ export default {
             this.fromBridge.asset.id, //erc20addr
             this.fromBridge.asset.abi //erc20abi
           ),
-          "wating approve tx confirm. you can check a tx in the wallet."
+          "Wating an approve tx signing. Please confirm the tx in your wallet."
         );
       }
     },
@@ -448,7 +472,7 @@ export default {
               this.fromBridge.contract.id,
               this.fromBridge.contract.abi
             ),
-            "lock tx description"
+            "Wating a lock tx signing. Please confirm the tx in your wallet."
           );
         } else if (this.optype === "unlock") {
           // wait until transaction finished
@@ -467,7 +491,7 @@ export default {
               this.verifiedReceiver,
               this.toBridge.asset.id
             ),
-            "unlock tx description"
+            "Wating an unlock tx signing. Please confirm the tx in your wallet."
           );
         } else if (this.optype == "unfreeze") {
           let builtTx = await ethToAergo.buildUnfreezeTx(
@@ -490,7 +514,7 @@ export default {
               this.toBridge.contract.id,
               builtTx
             ),
-            "unfreeze description"
+            "Wating an unfreeze tx signing. Please confirm the tx in your wallet."
           );
         } else if (this.optype == "freeze") {
           let builtTx = await aergoToEth.buildFreezeTx(
@@ -507,7 +531,7 @@ export default {
               this.fromBridge.contract.id,
               builtTx
             ),
-            "freeze description"
+            "Wating a freeze tx signing. Please confirm the tx in your wallet."
           );
         }
       } else {
