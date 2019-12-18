@@ -3,7 +3,7 @@
   <v-row align="center">
     <v-expansion-panels focusable accordion>
       <v-expansion-panel v-for="(item,i) in bridges" :key="i">
-        <v-expansion-panel-header>{{item.bridge1.net.label}}({{item.bridge1.asset.label}}) - {{item.bridge2.net.label}}({{item.bridge2.asset.label}})</v-expansion-panel-header>
+        <v-expansion-panel-header>{{genLabel(item.bridge1, item.bridge2)}}</v-expansion-panel-header>
         <v-expansion-panel-content>
           <v-container fluid class="pa-0">
             <v-row>
@@ -26,15 +26,70 @@
         </v-expansion-panel-content>
       </v-expansion-panel>
       <v-expansion-panel>
-        <v-expansion-panel-header>( ... or Add/Remove Custom Bridge)</v-expansion-panel-header>
-        <v-expansion-panel-content>TODO add/remove bridge</v-expansion-panel-content>
+        <v-expansion-panel-header
+          class="font-weight-thin blue-grey--text"
+        >( Add/Remove Custom Bridge )</v-expansion-panel-header>
+        <v-expansion-panel-content>
+          You may
+          <v-btn text color="primary" @click="addDialog.open = true">Add</v-btn>/
+          <v-btn text color="primary" @click="removeDialog.open = true">Remove</v-btn>/
+          <v-btn text color="primary" @click="resetBridge">Reset</v-btn>the Merkle Bridge-Asset Pair.
+        </v-expansion-panel-content>
       </v-expansion-panel>
     </v-expansion-panels>
+    <v-dialog persistent v-model="addDialog.open" max-width="450">
+      <v-card>
+        <v-card-title>Add the Bridge-Asset Pair</v-card-title>
+        <v-card-text
+          class="text-left"
+        >Select a json file containing pair infomation. (Only .json extension is supported) Add only verified pairs!</v-card-text>
+        <v-card-text>
+          <v-file-input
+            ref="fileInput"
+            :rules="[validateBridgeFile]"
+            label="File input"
+            v-model="addDialog.filePath"
+            accept=".json"
+            @change="onAddFileChange"
+          ></v-file-input>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="primary" @click="addBridge" :disabled="!addDialog.isOk">Add</v-btn>
+          <v-btn text @click="addDialog.open = false">Cancel</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-dialog persistent v-model="removeDialog.open" max-width="550">
+      <v-card>
+        <v-card-title>Remove the Bridge-Asset Pair</v-card-title>
+        <v-card-text class="text-left">Select the pair to remove</v-card-text>
+        <v-card-text>
+          <span v-for="(item,i) in bridges" :key="i">
+            <v-checkbox
+              class="ma-0 pa-0"
+              v-model="removeDialog.selected"
+              :label="genLabel(item.bridge1, item.bridge2)"
+              :value="i"
+            ></v-checkbox>
+          </span>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="primary"
+            @click="removeBridge"
+            :disabled="!removeDialog.selected.length"
+          >Remove</v-btn>
+          <v-btn text @click="removeDialog.open = false">Cancel</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-row>
 </template>
 
 <script>
-import {defaultBridges} from "./common/DefaultBridges";
+import { defaultBridges, validateBridge } from "./common/DefaultBridges";
 import BridgeCard from "./BridgeCard";
 
 export default {
@@ -43,10 +98,20 @@ export default {
     BridgeCard
   },
   data: () => ({
-    bridges: null
+    bridges: null,
+    addDialog: {
+      open: false,
+      filePath: null,
+      fileContent: null,
+      isOk: false
+    },
+    removeDialog: {
+      open: false,
+      selected: []
+    }
   }),
   created() {
-    localStorage.clear(); //FIXME remove this
+    //localStorage.clear(); //FIXME remove this
 
     // set initail bridge configuration
     if (localStorage.getItem("_bridges") === null) {
@@ -62,6 +127,71 @@ export default {
       } else {
         this.$emit("stepping", 3);
       }
+    },
+    addBridge() {
+      // add to current bridge list
+      this.bridges.push(this.addDialog.fileContent);
+
+      // save new bridge list
+      localStorage.setItem("_bridges", JSON.stringify(this.bridges));
+
+      //close a dialog
+      this.addDialog.open = false;
+    },
+    onAddFileChange() {
+      let reader = new FileReader();
+
+      if (this.addDialog.filePath) {
+        reader.onload = () => {
+          this.addDialog.fileContent = JSON.parse(reader.result);
+
+          this.$refs.fileInput.validate();
+        };
+        reader.readAsText(this.addDialog.filePath);
+      }
+    },
+    validateBridgeFile() {
+      if (this.addDialog.fileContent) {
+        let valid,
+          errors = validateBridge(this.addDialog.fileContent);
+        this.addDialog.isOk = valid;
+        if (valid) {
+          return true;
+        } else {
+          return errors;
+        }
+      }
+      this.addDialog.isOk = false;
+      return true;
+    },
+    removeBridge() {
+      let sortSelected = this.removeDialog.selected.sort();
+
+      // remove bridge selected
+      for (var i = sortSelected.length - 1; i >= 0; i--) {
+        this.bridges.splice(sortSelected[i], 1);
+      }
+
+      // update bridge list
+      localStorage.setItem("_bridges", JSON.stringify(this.bridges));
+
+      this.removeDialog.selected = [];
+    },
+    resetBridge() {
+      localStorage.setItem("_bridges", JSON.stringify(defaultBridges));
+      this.bridges = JSON.parse(localStorage.getItem("_bridges"));
+    },
+    genLabel(bridge1, bridge2) {
+      return (
+        bridge1.net.label +
+        "(" +
+        bridge1.asset.label +
+        ") - " +
+        bridge2.net.label +
+        "(" +
+        bridge2.asset.label +
+        ")"
+      );
     }
   }
 };

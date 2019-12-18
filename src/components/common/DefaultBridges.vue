@@ -2,6 +2,7 @@
 import { aergoBridgeAbi } from "../abi/AergoBridge";
 import { etherBridgeAbi } from "../abi/EtherBridge";
 import { erc20Abi } from "../abi/EtherERC20";
+import { Validator } from "jsonschema";
 
 export const assetType = {
   native: "native",
@@ -52,8 +53,8 @@ export const defaultBridges = [
         decimals: 18
       }
     }
-  },
- /* {
+  }
+  ,{
     bridge1: {
       net: {
         label: "Aergo testnet",
@@ -127,8 +128,86 @@ export const defaultBridges = [
         id: "0xef27c1d9b1464e0edbcc69b429b872eb89877bd9"
       }
     }
-  }*/
+  }
 ];
+
+const netTemplate = {
+  id: "/Net",
+  type: "object",
+  properties: {
+    label: { type: "string" },
+    type: { type: "string" },
+    endpoint: { type: "string" },
+    scan: { type: "string" },
+    networkVersion: { type: "string" }, //(optional) ethereum
+    chainId: { type: "string" } //(optional) aergo
+  },
+  required: ["label", "type", "endpoint", "scan"]
+};
+
+const contractTemplate = {
+  id: "/Contract",
+  type: "object",
+  properties: {
+    id: { type: "string" },
+    abi: { type: ["array", "object"], items: { type: "object" } }
+  },
+  required: ["id", "abi"]
+};
+
+const assetTemplate = {
+  id: "/Asset",
+  type: "object",
+  properties: {
+    label: { type: "string" },
+    type: { type: "string" },
+    isPegged: { type: "boolean" },
+    id: { type: "string" },
+    abi: { type: ["array", "object"], items: { type: "object" } }, //(optional) only for ethereum
+    decimals: { type: "integer", minimum: 1 }
+  },
+  required: ["label", "type", "isPegged", "id", "decimals"]
+};
+
+const bridgeTemplate = {
+  id: "/Bridge",
+  type: "object",
+  properties: {
+    net: { $ref: "/Net" },
+    contract: { $ref: "/Contract" },
+    asset: { $ref: "/Asset" }
+  },
+  required: ["net", "contract", "asset"]
+};
+
+const template = {
+  id: "/Main",
+  type: "object",
+  properties: {
+    bridge1: { $ref: "/Bridge" },
+    bridge2: { $ref: "/Bridge" }
+  },
+  required: ["bridge1", "bridge2"]
+};
+
+var v = new Validator();
+v.addSchema(netTemplate, "/Net");
+v.addSchema(contractTemplate, "/Contract");
+v.addSchema(assetTemplate, "/Asset");
+v.addSchema(bridgeTemplate, "/Bridge");
+
+export function validateBridge(newBridge) {
+  let result = v.validate(newBridge, template);
+  
+  return (
+    result.valid,
+    result.errors
+      .map(function(elem) {
+        return elem.stack;
+      })
+      .join(", ")
+  );
+}
 
 export default {};
 </script>

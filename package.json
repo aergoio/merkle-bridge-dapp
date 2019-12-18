@@ -11,6 +11,7 @@
     "@herajs/client": "^0.16.4",
     "core-js": "^2.6.5",
     "eth-merkle-bridge-js": "0.3.0",
+    "jsonschema": "^1.2.5",
     "v-clipboard": "^2.2.2",
     "vue": "^2.6.10",
     "vuetify": "^2.0.18",
