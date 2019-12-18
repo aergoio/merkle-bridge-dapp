@@ -9,12 +9,14 @@
           </v-list-item-avatar>
           <v-list-item-content>Transfer Asset</v-list-item-content>
         </v-list-item>
+        <!--
         <v-list-item @click="step=1; menu='navigate'; drawer=false;">
           <v-list-item-avatar>
             <v-icon large>mdi-search-web</v-icon>
           </v-list-item-avatar>
           <v-list-item-content>Navigate</v-list-item-content>
         </v-list-item>
+        -->
       </v-navigation-drawer>
       <AccountToolBar
         v-bind:isLoginNeeded="isLoginNeeded"
