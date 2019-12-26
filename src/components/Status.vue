@@ -97,7 +97,7 @@
 <script>
 import { validateAddress, applyDecimals } from "./common/Utils";
 import { ethToAergo, utils, aergoToEth } from "eth-merkle-bridge-js";
-import { AergoClient, GrpcProvider } from "@herajs/client";
+import { AergoClient, GrpcWebProvider } from "@herajs/client";
 import Web3 from "web3";
 
 export default {
@@ -171,7 +171,7 @@ export default {
         ) {
           let herajs = new AergoClient(
             {},
-            new GrpcProvider({ url: this.toBridge.net.endpoint })
+            new GrpcWebProvider({ url: this.toBridge.net.endpoint })
           );
 
           let web3Full = new Web3(
@@ -197,7 +197,7 @@ export default {
         ) {
           let herajs = new AergoClient(
             {},
-            new GrpcProvider({ url: this.fromBridge.net.endpoint })
+            new GrpcWebProvider({ url: this.fromBridge.net.endpoint })
           );
 
           let web3Full = new Web3(
