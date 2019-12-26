@@ -11,7 +11,7 @@ export const assetType = {
 };
 
 export const defaultBridges = [
-  {
+  /*{
     bridge1: {
       net: {
         label: "Ethereum Local",
@@ -53,18 +53,18 @@ export const defaultBridges = [
         decimals: 18
       }
     }
-  }
-  ,{
+  }, */
+  {
     bridge1: {
       net: {
-        label: "Aergo testnet",
+        label: "Aergo Testnet",
         type: "aergo",
         chainId: "testnet.aergo.io",
-        endpoint: "http://127.0.0.1:3000",
+        endpoint: "http://testnet-api-http.aergo.io:443",
         scan: "https://testnet.aergoscan.io/account/"
       },
       contract: {
-        id: "AmfzMkaFchxxqg39mcSMkj1rnnBtUZUipDhLBi2H3ewDReJjzLGz",
+        id: "Amh76FdT5Q8rmeJxVb31GQubZ4nWQK4HzgbvE1u9jehQTXPg8Ksv",
         abi: aergoBridgeAbi
       },
       asset: {
@@ -76,56 +76,22 @@ export const defaultBridges = [
     },
     bridge2: {
       net: {
-        label: "Ethereum testnet",
+        label: "Ethereum Testnet",
         type: "ethereum",
         networkVersion: "3",
-        endpoint: "127.0.0.2:3000",
+        endpoint: "13.209.186.203:8545",
         scan: "https://ropsten.etherscan.io/search?q="
       },
       contract: {
-        id: "0xef27c1d9b1464e0edbcc69b429b872eb89877bd9",
+        id: "0xd6d81a49527ec42Ed5E5a60B86F316E683991116",
         abi: etherBridgeAbi
       },
       asset: {
         label: "erc20 aergo",
         type: assetType.erc20,
         isPegged: false,
-        id: "0xd898383A12CDE0eDF7642F7dD4D7006FdE5c433e",
+        id: "0x9b132615129867f747C26e58FEcdea8eF2b55Bb2",
         abi: erc20Abi
-      }
-    }
-  },
-  {
-    bridge1: {
-      net: {
-        label: "Aergo testnet",
-        type: "aergo",
-        chainId: "testnet.aergo.io",
-        endpoint: "http://127.0.0.1:3000",
-        scan: "https://testnet.aergoscan.io/account/"
-      },
-      contract: { id: "AmfzMkaFchxxqg39mcSMkj1rnnBtUZUipDhLBi2H3ewDReJjzLGz" },
-      asset: {
-        label: "arc1 gotchu",
-        type: assetType.arc1,
-        isPegged: true,
-        id: "0xef27c1d9b1464e0edbcc69b429b872eb89877bd9"
-      }
-    },
-    bridge2: {
-      net: {
-        label: "Ethereum testnet",
-        type: "ethereum",
-        networkVersion: "3",
-        endpoint: "127.0.0.2:3000",
-        scan: "https://ropsten.etherscan.io/search?q="
-      },
-      contract: { id: "0xef27c1d9b1464e0edbcc69b429b872eb89877bd9" },
-      asset: {
-        label: "erc20 gotchu",
-        type: assetType.erc20,
-        isPegged: false,
-        id: "0xef27c1d9b1464e0edbcc69b429b872eb89877bd9"
       }
     }
   }
