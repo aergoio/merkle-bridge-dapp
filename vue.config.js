@@ -1,4 +1,7 @@
 module.exports = {
-    outputDir: 'docs',
-    publicPath: '/merkle-bridge-dapp/'
+    configureWebpack: {
+      devServer: {
+        headers: { "Access-Control-Allow-Origin": "*" }
+      }
+    }
   }
