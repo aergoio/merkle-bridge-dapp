@@ -60,7 +60,7 @@ export const defaultBridges = [
         label: "Aergo Testnet",
         type: "aergo",
         chainId: "testnet.aergo.io",
-        endpoint: "http://testnet-api-http.aergo.io:443",
+        endpoint: "http://testnet-api-http.aergo.io:7845",
         scan: "https://testnet.aergoscan.io/account/"
       },
       contract: {
@@ -68,10 +68,11 @@ export const defaultBridges = [
         abi: aergoBridgeAbi
       },
       asset: {
-        label: "native aergo",
+        label: "Native Aergo",
         type: assetType.native,
         isPegged: false,
-        id: ""
+        id: "",
+        decimals: 18
       }
     },
     bridge2: {
@@ -79,7 +80,7 @@ export const defaultBridges = [
         label: "Ethereum Testnet",
         type: "ethereum",
         networkVersion: "3",
-        endpoint: "13.209.186.203:8545",
+        endpoint: "http://13.209.186.203:8545",
         scan: "https://ropsten.etherscan.io/search?q="
       },
       contract: {
@@ -91,7 +92,8 @@ export const defaultBridges = [
         type: assetType.erc20,
         isPegged: false,
         id: "0x9b132615129867f747C26e58FEcdea8eF2b55Bb2",
-        abi: erc20Abi
+        abi: erc20Abi,
+        decimals: 18
       }
     }
   }
