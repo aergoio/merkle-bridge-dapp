@@ -419,6 +419,8 @@ export default {
       if (this.$refs.form.validate() && this.amount.compare(this.approvedAmount) == 1) {
         this.approveDialog.status = this.NONE;
         this.approveDialog.open = true; //open dialog and ask
+        this.approveDialog.txHash = ''; 
+        this.approveDialog.blockHash = ''; 
         this.approveDialog.message =
           "Do you approve that " +
           applyDecimals(
