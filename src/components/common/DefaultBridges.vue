@@ -80,7 +80,7 @@ export const defaultBridges = [
         label: "Ethereum Testnet",
         type: "ethereum",
         networkVersion: "3",
-        endpoint: "wss://ethtestnet-ws.aergo.io",
+        endpoint: "https://ethtestnet.aergo.io/",
         scan: "https://ropsten.etherscan.io/search?q="
       },
       contract: {
