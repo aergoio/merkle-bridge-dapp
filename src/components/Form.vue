@@ -405,23 +405,26 @@ export default {
               } else if (confirmationNumber == 3) {
                 dialog.message =
                   "The transaction is included in a block and 3+ block confirmations have occurred. You can continue";
-                dialog.status = this.SUCCESS;
+                dialog.status = "SUCCESS"; //this.SUCCESS does not work
               }
             }).on('error', function(err) {
-               dialog.status = this.FAIL;
+                dialog.status = "FAIL";
                 dialog.message = err;
                 dialog.txHash = "";
             });
         } else {
           // aergo case
           // wait the tx is confirmed
+          //const response = 
+          await receipt;
+
           dialog.status = this.SUCCESS;
           dialog.message =
             "The transaction has been confirmed and included in block";
           
           // TODO after aergo connect supports query api
-          // dialog.blockHash = receipt.blockhash;
-          // dialog.txHash = receipt.txHash;
+          // dialog.blockHash = response.blockhash;
+          // dialog.txHash = response.txHash;
         }
       } catch (err) {
         dialog.status = this.FAIL;
