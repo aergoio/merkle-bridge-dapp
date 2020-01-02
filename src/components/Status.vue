@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="toBridge">
     <v-form ref="form" v-model="valid" lazy-validation>
       <v-row align="center" no-gutters>
         <v-col>

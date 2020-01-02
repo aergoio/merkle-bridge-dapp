@@ -120,7 +120,7 @@
             slot="append"
             v-if="bridge && (verifiedAmountWithFeeDecimalsStr !== verifiedAmountDecimalStr)"
             class="blinking"
-          > (Operator Fee is Applied)</span>
+          >(Operator Fee is Applied)</span>
         </v-text-field>
       </div>
     </v-form>
@@ -133,15 +133,14 @@
         <v-card>
           <v-card-title>Send Tx: {{sendDialog.status}}</v-card-title>
           <v-card-text class="text-left">{{sendDialog.message}}</v-card-text>
-           <v-card-text v-if="sendDialog.txHash" class="text-left">
-             <div class="subtitle-1 black--text">Tx Hash</div>
-            <a :href="bridge.net.scan + sendDialog.txHash"
-              target="_blank"
-            >{{sendDialog.txHash}}</a>
+          <v-card-text v-if="sendDialog.txHash" class="text-left">
+            <div class="subtitle-1 black--text">Tx Hash</div>
+            <a :href="bridge.net.scan + sendDialog.txHash" target="_blank">{{sendDialog.txHash}}</a>
           </v-card-text>
           <v-card-text v-if="sendDialog.blockHash" class="text-left">
             <div class="subtitle-1 black--text">Included in Block</div>
-            <a :href="bridge.net.scan + sendDialog.blockHash"
+            <a
+              :href="bridge.net.scan + sendDialog.blockHash"
               target="_blank"
             >{{sendDialog.blockHash}}</a>
           </v-card-text>
@@ -163,15 +162,17 @@
         <v-card>
           <v-card-title>Request Approval: {{approveDialog.status}}</v-card-title>
           <v-card-text class="text-left">{{approveDialog.message}}</v-card-text>
-           <v-card-text v-if="approveDialog.txHash" class="text-left">
-             <div class="subtitle-1 black--text">Tx Hash</div>
-            <a :href="bridge.net.scan + approveDialog.txHash"
+          <v-card-text v-if="approveDialog.txHash" class="text-left">
+            <div class="subtitle-1 black--text">Tx Hash</div>
+            <a
+              :href="bridge.net.scan + approveDialog.txHash"
               target="_blank"
             >{{approveDialog.txHash}}</a>
           </v-card-text>
           <v-card-text v-if="approveDialog.blockHash" class="text-left">
             <div class="subtitle-1 black--text">Included in Block</div>
-            <a :href="bridge.net.scan + approveDialog.blockHash"
+            <a
+              :href="bridge.net.scan + approveDialog.blockHash"
               target="_blank"
             >{{approveDialog.blockHash}}</a>
           </v-card-text>
@@ -385,42 +386,60 @@ export default {
       dialog.status = this.WAIT;
       dialog.blockHash = null;
       dialog.message = msg;
-      dialog.txHash = '';
+      dialog.txHash = "";
       dialog.open = true;
       try {
-        // metamask returns tx hash after signing tx
-        if(receipt.on) {
-        receipt.on('transactionHash', function(hash){
-          dialog.message = 'Wait transaction confirming';
-          dialog.txHash = hash;
-        });
-        }
-
-        // wait the tx is confirmed
-        const response = await receipt;
-
-        dialog.status = this.SUCCESS;
-        dialog.message =
-          "The transaction has been confirmed and included in block";
-        if (this.bridge.net.type === "aergo") {
-          dialog.blockHash = response.blockhash;
+        // ethereum case
+        if (receipt.on) {
+          // metamask returns tx hash after signing tx
+          receipt
+            .on("transactionHash", function(hash) {
+              dialog.message = "Wait transaction confirming";
+              dialog.txHash = hash;
+            })
+            .on("confirmation", function(confirmationNumber, receipt) {
+              if (confirmationNumber == 1) {
+                dialog.message =
+                  "The transaction has been confirmed and included in block. Waiting 3+ confirmation";
+                dialog.blockHash = receipt.blockNumber; // update blockhash
+              } else if (confirmationNumber == 3) {
+                dialog.message =
+                  "The transaction is included in a block and 3+ block confirmations have occurred. You can continue";
+                dialog.status = this.SUCCESS;
+              }
+            }).on('error', function(err) {
+               dialog.status = this.FAIL;
+                dialog.message = err;
+                dialog.txHash = "";
+            });
         } else {
-          dialog.blockHash = response.blockHash;
+          // aergo case
+          // wait the tx is confirmed
+          dialog.status = this.SUCCESS;
+          dialog.message =
+            "The transaction has been confirmed and included in block";
+          
+          // TODO after aergo connect supports query api
+          // dialog.blockHash = receipt.blockhash;
+          // dialog.txHash = receipt.txHash;
         }
       } catch (err) {
         dialog.status = this.FAIL;
         dialog.message = err;
-        dialog.txHash = '';
+        dialog.txHash = "";
       }
     },
     clickApproveIcon() {
       this.checkApprovedAmount = false;
-       
-      if (this.$refs.form.validate() && this.amount.compare(this.approvedAmount) == 1) {
+
+      if (
+        this.$refs.form.validate() &&
+        this.amount.compare(this.approvedAmount) == 1
+      ) {
         this.approveDialog.status = this.NONE;
         this.approveDialog.open = true; //open dialog and ask
-        this.approveDialog.txHash = ''; 
-        this.approveDialog.blockHash = ''; 
+        this.approveDialog.txHash = "";
+        this.approveDialog.blockHash = "";
         this.approveDialog.message =
           "Do you approve that " +
           applyDecimals(

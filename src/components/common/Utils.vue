@@ -56,9 +56,13 @@ export function sendTxToAergoConnect(endpoint, contractID, builtTx) {
             if (event.detail.error) {
               reject(event.detail.error);
             } else {
-              const receipt = await herajs.getTransactionReceipt(
+              let receipt = await herajs.getTransactionReceipt(
                 event.detail.hash
               );
+              // set to new key to match with ether
+              receipt.blockNumber = receipt.blockno
+              receipt.blockHash = receipt.blockhash
+              receipt.txHash = event.detail.hash;
               resolve(receipt);
             }
           } catch (err) {
