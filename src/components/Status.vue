@@ -6,7 +6,7 @@
         <v-text-field
           v-model="receiver"
           :rules="[validateReceiver]"
-          label="To Address"
+           :label="'To Address (' + toBridge.net.label + ')'"
           required
           clearable
         ></v-text-field>
