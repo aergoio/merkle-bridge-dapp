@@ -388,44 +388,23 @@ export default {
       dialog.message = msg;
       dialog.txHash = "";
       dialog.open = true;
-      try {
-        // ethereum case
-        if (receipt.on) {
-          // metamask returns tx hash after signing tx
-          receipt
-            .on("transactionHash", function(hash) {
-              dialog.message = "Wait transaction confirming";
-              dialog.txHash = hash;
-            })
-            .on("confirmation", function(confirmationNumber, receipt) {
-              if (confirmationNumber == 1) {
-                dialog.message =
-                  "The transaction has been confirmed and included in block. Waiting 3+ confirmation";
-                dialog.blockHash = receipt.blockNumber; // update blockhash
-              } else if (confirmationNumber == 3) {
-                dialog.message =
-                  "The transaction is included in a block and 3+ block confirmations have occurred. You can continue";
-                dialog.status = "SUCCESS"; //this.SUCCESS does not work
-              }
-            }).on('error', function(err) {
-                dialog.status = "FAIL";
-                dialog.message = err;
-                dialog.txHash = "";
-            });
-        } else {
-          // aergo case
-          // wait the tx is confirmed
-          //const response = 
-          await receipt;
 
-          dialog.status = this.SUCCESS;
-          dialog.message =
-            "The transaction has been confirmed and included in block";
-          
-          // TODO after aergo connect supports query api
-          // dialog.blockHash = response.blockhash;
-          // dialog.txHash = response.txHash;
+      try {
+        if (receipt.on) {
+          receipt.on("transactionHash", function(hash) {
+            dialog.txHash = hash;
+          });
         }
+        const response = await receipt;
+
+        dialog.status = this.SUCCESS;
+        dialog.message =
+          "The transaction has been confirmed and included in block";
+        if(this.bridge.net.type !== "aergo") { // aergo scan does not support common query api
+          dialog.txHash = response.transactionHash;
+          dialog.blockHash = response.blockHash;
+        }
+
       } catch (err) {
         dialog.status = this.FAIL;
         dialog.message = err;

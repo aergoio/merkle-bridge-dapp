@@ -62,7 +62,7 @@ export function sendTxToAergoConnect(endpoint, contractID, builtTx) {
               // set to new key to match with ether
               receipt.blockNumber = receipt.blockno
               receipt.blockHash = receipt.blockhash
-              receipt.txHash = event.detail.hash;
+              receipt.transactionHash = event.detail.hash;
               resolve(receipt);
             }
           } catch (err) {
