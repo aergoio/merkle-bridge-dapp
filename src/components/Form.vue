@@ -146,6 +146,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
+            <div v-if="sendDialog.status===this.WAIT" class="gray--text">(This take up to 1 min)</div>
             <v-btn
               :loading="sendDialog.status===this.WAIT"
               color="primary"
@@ -237,7 +238,7 @@ export default {
     checkApprovedAmount: true,
     showApproveTooltip: false,
     sendDialog: {
-      open: false,
+      open: true,
       status: "",
       message: "",
       blockHash: "",
@@ -449,7 +450,7 @@ export default {
             this.fromBridge.asset.id, //erc20addr
             this.fromBridge.asset.abi //erc20abi
           ),
-          "Wating an approve tx signing. Please confirm the tx in your wallet."
+          "Waiting an approve tx. Please confirm the tx in your wallet. And wait for the tx to be confirmed."
         );
       }
     },
@@ -474,7 +475,7 @@ export default {
               this.fromBridge.contract.id,
               this.fromBridge.contract.abi
             ),
-            "Wating a lock tx signing. Please confirm the tx in your wallet."
+            "Waiting a lock tx. Please confirm the tx in your wallet. And wait for the tx to be confirmed."
           );
         } else if (this.optype === "unlock") {
           // wait until transaction finished
@@ -493,7 +494,7 @@ export default {
               this.verifiedReceiver,
               this.toBridge.asset.id
             ),
-            "Wating an unlock tx signing. Please confirm the tx in your wallet."
+            "Waiting an unlock tx. Please confirm the tx in your wallet. And wait for the tx to be confirmed."
           );
         } else if (this.optype == "unfreeze") {
           let builtTx = await ethToAergo.buildUnfreezeTx(
@@ -516,7 +517,7 @@ export default {
               this.toBridge.contract.id,
               builtTx
             ),
-            "Wating an unfreeze tx signing. Please confirm the tx in your wallet."
+            "Waiting an unfreeze tx. Please confirm the tx in your wallet. And wait for the tx to be confirmed."
           );
         } else if (this.optype == "freeze") {
           let builtTx = await aergoToEth.buildFreezeTx(
@@ -533,7 +534,7 @@ export default {
               this.fromBridge.contract.id,
               builtTx
             ),
-            "Wating a freeze tx signing. Please confirm the tx in your wallet."
+            "Waiting a freeze tx. Please confirm the tx in your wallet. And wait for the tx to be confirmed."
           );
         }
       } else {
