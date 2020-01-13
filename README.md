@@ -95,7 +95,7 @@ On ethereum testnet, ERC20 Aergo must be sent to the Merkle Bridge contract to L
 1. If you're new to this DApp, you need to click the Metamask button in the top right corner and click the `Connect DApp` button. And allow account access on the metamask.
 1. Enter the Aergo address to receive the ERC20 Aergo
 1. Enter the amount of ERC20 Aergo to transfer
-1. The Merkle Bridge DApp needs to be approved by the user in order to send ERC20 instead. Press the increase approval button (With an arrow mark in the rectangle) on the right. Then click the `Send approve tx` button in the dialog poped up. Finally, approve the transaction in metamask (To check the updated amount, click the refresh button on the right)
+1. The Merkle Bridge DApp needs to be approved by the user in order to send ERC20 instead. Press the increase approval button. Then click the `Send approve tx` button in the dialog poped up. Finally, approve the transaction in metamask (To check the updated amount, click the refresh button on the right)
 1. Click a `Send Lock Tx` button
 1. Confirm the transaction in Metamask
 

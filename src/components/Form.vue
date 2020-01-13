@@ -85,14 +85,6 @@
         >
           <span slot="append" v-if="needApproveToken">
             &nbsp; / {{ approvedAmountDecimalsStr }} Approved
-            <v-tooltip v-model="showApproveTooltip" bottom color="red">
-              <template v-slot:activator="{ on }">
-                <v-btn icon v-on="on">
-                  <v-icon @click="clickApproveIcon">mdi-import</v-icon>
-                </v-btn>
-              </template>
-              <span>Increase Approval</span>
-            </v-tooltip>
             <v-icon @click="updateApprovedAmount" class="ma-0 pa-0">mdi-refresh</v-icon>
           </span>
         </v-text-field>
@@ -124,6 +116,9 @@
         </v-text-field>
       </div>
     </v-form>
+
+    <v-btn v-if="needApproveToken" :disabled="enableApproveButton === false" color="primary" v-on="on" @click="clickApproveButton">Increase Approval</v-btn>
+    &nbsp; 
     <v-btn color="primary" :disabled="valid === false" @click="clickSend">Send {{this.optype}} Tx</v-btn>
     <v-btn text @click="clickBack">Back</v-btn>
 
@@ -236,9 +231,9 @@ export default {
     verifiedAmountWithFeeDecimalsStr: "0",
     approvedAmount: new Amount(0),
     checkApprovedAmount: true,
-    showApproveTooltip: false,
+    enableApproveButton: false,
     sendDialog: {
-      open: true,
+      open: false,
       status: "",
       message: "",
       blockHash: "",
@@ -401,18 +396,18 @@ export default {
         dialog.status = this.SUCCESS;
         dialog.message =
           "The transaction has been confirmed and included in block";
-        if(this.bridge.net.type !== "aergo") { // aergo scan does not support common query api
+        if (this.bridge.net.type !== "aergo") {
+          // aergo scan does not support common query api
           dialog.txHash = response.transactionHash;
           dialog.blockHash = response.blockHash;
         }
-
       } catch (err) {
         dialog.status = this.FAIL;
         dialog.message = err;
         dialog.txHash = "";
       }
     },
-    clickApproveIcon() {
+    clickApproveButton() {
       this.checkApprovedAmount = false;
 
       if (
@@ -459,7 +454,7 @@ export default {
       this.approveDialog.open = false;
     },
     async clickSend() {
-      this.showApproveTooltip = false;
+      //this.enableApproveButton = false;
       if (this.$refs.form.validate()) {
         this.sendDialog.status = this.NONE;
         if (this.optype === "lock") {
@@ -544,7 +539,7 @@ export default {
       }
     },
     clickBack() {
-      this.showApproveTooltip = false;
+      //this.enableApproveButton = false;
       this.$refs.form.resetValidation();
       this.$emit("needLogin", false, this.bridge.net.type);
       this.$emit("stepping", "prev");
@@ -572,6 +567,8 @@ export default {
       }
     },
     validateAmount(v) {
+      this.enableApproveButton = true;
+
       if (!v) {
         return "Amount is required";
       } else if (
@@ -589,7 +586,7 @@ export default {
           this.approvedAmount
         ) > 0 // value must be bigger than already approved amount
       ) {
-        this.showApproveTooltip = true;
+        
         return (
           "Approved Asset Amount is Insufficient (Current Approval = " +
           applyDecimals(
@@ -600,6 +597,9 @@ export default {
           ")"
         );
       }
+
+      this.enableApproveButton = false;
+
       return true;
     },
     updateApprovedAmount() {
