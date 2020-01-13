@@ -3436,10 +3436,10 @@ eth-lib@0.2.8:
     elliptic "^6.4.0"
     xhr-request-promise "^0.1.2"
 
-eth-merkle-bridge-js@0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/eth-merkle-bridge-js/-/eth-merkle-bridge-js-0.3.0.tgz#497ab14eda90c82de642c6d4c08f1294c864d776"
-  integrity sha512-IHLJPUVwyNTHemaC0kprspC/XHj1e5anW05YSQCkI1CS3UjffebcZKuOBzRS01129ice7LxwJr2GvPTjBe0nng==
+eth-merkle-bridge-js@^0.3.1:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/eth-merkle-bridge-js/-/eth-merkle-bridge-js-0.3.1.tgz#80c44167895d100eba811ec52f39963f5477ab0b"
+  integrity sha512-Nh2xhf1FmjLfhsSQLZ7LDOI4z0GzvQ5aO/4nLoPsKhpmmms7mrQCQgKkiggrGTmJHm8EyJTD0C0zyWkJsC+k9Q==
   dependencies:
     "@herajs/client" "^0.13.2"
     bignumber.js "^9.0.0"
