@@ -117,8 +117,12 @@
       </div>
     </v-form>
 
-    <v-btn v-if="needApproveToken" :disabled="enableApproveButton === false" color="primary" v-on="on" @click="clickApproveButton">Increase Approval</v-btn>
-    &nbsp; 
+    <v-btn
+      v-if="needApproveToken"
+      :disabled="enableApproveButton === false"
+      color="primary"
+      @click="clickApproveButton"
+    >Increase Approval</v-btn>&nbsp;
     <v-btn color="primary" :disabled="valid === false" @click="clickSend">Send {{this.optype}} Tx</v-btn>
     <v-btn text @click="clickBack">Back</v-btn>
 
@@ -396,10 +400,11 @@ export default {
         dialog.status = this.SUCCESS;
         dialog.message =
           "The transaction has been confirmed and included in block";
-        if (this.bridge.net.type !== "aergo") {
-          // aergo scan does not support common query api
-          dialog.txHash = response.transactionHash;
+        dialog.txHash = response.transactionHash;
+        if (this.bridge.net.type === "aergo") {
           dialog.blockHash = response.blockHash;
+        } else if (this.bridge.net.type === "ethereum") {
+          dialog.blockHash = response.blockNumber;
         }
       } catch (err) {
         dialog.status = this.FAIL;
@@ -586,7 +591,6 @@ export default {
           this.approvedAmount
         ) > 0 // value must be bigger than already approved amount
       ) {
-        
         return (
           "Approved Asset Amount is Insufficient (Current Approval = " +
           applyDecimals(

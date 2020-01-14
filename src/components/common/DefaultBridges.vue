@@ -61,7 +61,7 @@ export const defaultBridges = [
         type: "aergo",
         chainId: "testnet.aergo.io",
         endpoint: "https://testnet-api-http.aergo.io",
-        scan: "https://testnet.aergoscan.io/account/"
+        scan: "https://testnet.aergoscan.io/go?q="
       },
       contract: {
         id: "Amh76FdT5Q8rmeJxVb31GQubZ4nWQK4HzgbvE1u9jehQTXPg8Ksv",
