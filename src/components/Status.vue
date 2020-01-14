@@ -3,15 +3,20 @@
     <v-form ref="form" v-model="valid" lazy-validation>
       <v-row align="center" no-gutters>
         <v-col>
-        <v-text-field
-          v-model="receiver"
-          :rules="[validateReceiver]"
-           :label="'To Address (' + toBridge.net.label + ')'"
-          required
-          clearable
-        ></v-text-field>
+          <v-text-field
+            v-model="receiver"
+            :rules="[validateReceiver]"
+            :label="'To Address (' + toBridge.net.label + ')'"
+            required
+            clearable
+          ></v-text-field>
         </v-col>
-        <v-col md="auto"><v-btn color="primary" :disabled="valid === false" @click="search">Search</v-btn></v-col>
+        <v-col md="auto">
+          <v-btn color="primary" :disabled="valid === false" @click="search">
+            <span v-if="verifiedReceiver">Update</span>
+            <span v-else>Search</span>
+          </v-btn>
+        </v-col>
       </v-row>
 
       <v-container v-if="verifiedReceiver" class="py-0">
@@ -77,7 +82,8 @@
         <v-card>
           <v-card-title class="headline">Caution!</v-card-title>
           <v-card-text v-if="underVerifyAmountDecimalStr !== '0'">
-            <b>{{underVerifyAmountDecimalStr}}</b> assets are under verification. Only {{verifiedAmountDecimalStr}} verified assets are transfered.
+            <b>{{underVerifyAmountDecimalStr}}</b>
+            assets are under verification. Only {{verifiedAmountDecimalStr}} verified assets are transfered.
           </v-card-text>
           <v-card-text>
             <b>{{nextVerifyBlock}}</b>
@@ -225,8 +231,16 @@ export default {
             this.updateTime = new Date().toLocaleString();
             // verified asset info
             this.verifiedReceiver = this.receiver;
-            this.verifiedAmountDecimalStr = applyDecimals(results[0][0], this.toBridge.asset.decimals, false);
-            this.underVerifyAmountDecimalStr = applyDecimals(results[0][1], this.fromBridge.asset.decimals, false);
+            this.verifiedAmountDecimalStr = applyDecimals(
+              results[0][0],
+              this.toBridge.asset.decimals,
+              false
+            );
+            this.underVerifyAmountDecimalStr = applyDecimals(
+              results[0][1],
+              this.fromBridge.asset.decimals,
+              false
+            );
 
             // expected anchoring block height
             this.nextVerifyBlock =
@@ -238,7 +252,7 @@ export default {
           .catch(errs => {
             alert(errs);
             // eslint-disable-next-line
-            console.error(errs)
+            console.error(errs);
           });
       }
     }
