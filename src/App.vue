@@ -29,15 +29,24 @@
       <v-content class="pa-0" align-center style="min-width: 400px; max-width: 1000px">
         <v-stepper v-model="step" vertical>
           <v-stepper-step :complete="step > 1" step="1">
-            Select a bridge
-            <small>Choose paired assets, transfer direction and steps</small>
+            <v-row no-gutters>
+              <v-col>
+                Select a bridge
+                <br />
+                <small>Choose paired assets, transfer direction and steps</small>
+              </v-col>
+              <v-col v-if="this.step != 1 && this.toBridge !== null && this.fromBridge !== null">
+                {{fromBridge.net.label}}({{fromBridge.asset.label}})  <v-icon small>mdi-arrow-right</v-icon>  {{toBridge.net.label}}({{toBridge.asset.label}})
+              </v-col>
+            </v-row>
           </v-stepper-step>
           <v-stepper-content step="1">
             <BridgeSelect @select_bridge="select_bridge" @stepping="stepping" />
           </v-stepper-content>
 
           <div v-if="menu==='transfer'">
-            <v-stepper-step :complete="step > 2" step="2">Send an asset
+            <v-stepper-step :complete="step > 2" step="2">
+              Send an asset
               <small>On source network, transfer assets to the Merkle Bridge</small>
             </v-stepper-step>
             <v-stepper-content step="2">
@@ -54,7 +63,8 @@
               />
             </v-stepper-content>
 
-            <v-stepper-step :complete="step > 3" step="3">Wating a verification
+            <v-stepper-step :complete="step > 3" step="3">
+              Wating a verification
               <small>Check the source network's transmission state on the target network's Merkle Bridge</small>
             </v-stepper-step>
             <v-stepper-content step="3">
@@ -67,8 +77,9 @@
               <br />
             </v-stepper-content>
 
-            <v-stepper-step :complete="step > 4" step="4">Receive the asset
-              <small>On target network, withdraw assets from the Merkle Bridge </small>
+            <v-stepper-step :complete="step > 4" step="4">
+              Receive the asset
+              <small>On target network, withdraw assets from the Merkle Bridge</small>
             </v-stepper-step>
             <v-stepper-content step="4">
               <Form
@@ -92,13 +103,13 @@
             </v-stepper-content>
           </div>
           <div v-if="step > 4">
-            The asset is transfered successfully. <br/>
-            To send another asset, press the button below.
-            <br /><br />
+            The asset is transfered successfully.
+            <br />To send another asset, press the button below.
+            <br />
+            <br />
             <v-btn @click="step=1" color="primary">Select Bridge</v-btn>
           </div>
         </v-stepper>
-        
       </v-content>
     </v-app>
   </div>
@@ -135,7 +146,7 @@ export default {
     etheraccount: null,
     aergoaccount: null,
     st: "",
-    tmpText:'',
+    tmpText: ""
   }),
   methods: {
     login_ethereum(etheraccount) {
