@@ -188,7 +188,7 @@ export default {
 
 <style>
 #app {
-  font-family: "DINPro Regular", "sans-serif";
+  font-family: sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
