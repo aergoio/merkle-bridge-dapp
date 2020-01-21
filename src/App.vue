@@ -64,7 +64,7 @@
             </v-stepper-content>
 
             <v-stepper-step :complete="step > 3" step="3">
-              Wating a verification
+              Check if verified
               <small>Check the source network's transmission state on the target network's Merkle Bridge</small>
             </v-stepper-step>
             <v-stepper-content step="3">
@@ -104,8 +104,8 @@
             </v-stepper-content>
           </div>
           <div v-if="step > 4">
-            The asset is transfered successfully.
-            <br />To send another asset, press the button below.
+            The asset has been transfered successfully.
+            <br />To send another asset, click the button below.
             <br />
             <br />
             <v-btn @click="step=1" color="primary">Select Bridge</v-btn>

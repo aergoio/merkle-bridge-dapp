@@ -118,7 +118,7 @@ export async function getAergoNextVerifyToReceiver(
   });
 
   if (events.length === 0) {
-    return "Verification is delayed";
+    return "Delayed";
   } else {
     for (let n = 1; n < 10000; n++) {
       let nthAnchorHeight =
@@ -165,7 +165,7 @@ export async function getEthNextVerifyToReceiver(
   });
 
   if (events.length === 0) {
-    return "Verification is delayed";
+    return "Delayed";
   } else {
     for (let n = 1; n < 10000; n++) {
       let nthAnchorHeight =
@@ -178,7 +178,7 @@ export async function getEthNextVerifyToReceiver(
         if (nthAnchorHeight - anchorStatusQuery.bestHeight > 0) {
           return nthAnchorHeight - anchorStatusQuery.bestHeight;
         } else {
-          return "Soon";
+          return "Verifying";
         }
       }
     }

@@ -30,7 +30,7 @@
         <v-row class="title">Bridge Status ({{updateTime}})</v-row>
         <v-row class="body-1">{{verifiedReceiver}}</v-row>
         <v-row>
-          <v-col cols="5">
+          <v-col cols="4">
             <v-card class="my-2" sm="1">
               <v-icon>mdi-sack</v-icon>
               <v-icon large>mdi-bank-transfer-in</v-icon>
@@ -41,10 +41,10 @@
               <br />
               <span class="subtitle-1 grey--text">{{fromBridge.asset.label}}</span>
               <v-divider class="mx-4"></v-divider>
-              <span class="caption">Under Verification</span>
+              <span class="overline">Under Verification</span>
             </v-card>
           </v-col>
-          <v-col cols="2">
+          <v-col cols="4">
             <v-card class="my-2" sm="1">
               <v-icon large>mdi-calendar-clock</v-icon>
               <br />
@@ -52,10 +52,10 @@
               <br />
               <span class="subtitle-1 grey--text">Blocks</span>
               <v-divider class="mx-4"></v-divider>
-              <span class="caption">Next Verification</span>
+              <span class="overline">Next Verification</span>
             </v-card>
           </v-col>
-          <v-col cols="5">
+          <v-col cols="4">
             <v-card class="my-2" sm="1">
               <v-icon large>mdi-weather-cloudy-arrow-right</v-icon>
               <br />
@@ -83,11 +83,11 @@
           <v-card-title class="headline">Caution!</v-card-title>
           <v-card-text v-if="underVerifyAmountDecimalStr !== '0'">
             <b>{{underVerifyAmountDecimalStr}}</b>
-            assets are under verification. Only {{verifiedAmountDecimalStr}} verified assets are transfered.
+            assets are under verification. Only {{verifiedAmountDecimalStr}} verified assets will be transfered.
           </v-card-text>
           <v-card-text>
             <b>{{nextVerifyBlock}}</b>
-            next verification block is left. If the next verification time is reached during a next step, a transaction may fail. So leave enough block time to proceed.
+            blocks left until next verification. Make sure there is enough time for TX to be confirmed before proceeding to the next step. If the verification happens in the middle of the next step and the state changes, the current TX can fail.
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
@@ -263,7 +263,7 @@ export default {
             }
           })
           .catch(errs => {
-            alert(errs);
+            alert("The state is being processed. Please try again in a few minutes.");
             // eslint-disable-next-line
             console.error(errs);
           });

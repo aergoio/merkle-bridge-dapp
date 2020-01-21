@@ -81,7 +81,7 @@
           :label="'Amount (' + bridge.asset.label +')'"
           required
           clearable
-          prepend-inner-icon="mdi-currency-usd"
+          prepend-inner-icon="mdi-cash-multiple"
         >
           <span slot="append" v-if="needApproveToken">
             &nbsp; / {{ approvedAmountDecimalsStr }} Approved
@@ -122,8 +122,8 @@
       :disabled="enableApproveButton === false"
       color="primary"
       @click="clickApproveButton"
-    >Increase Approval</v-btn>&nbsp;
-    <v-btn color="primary" :disabled="valid === false" @click="clickSend">Send {{this.optype}} Tx</v-btn>
+    >Approve</v-btn>&nbsp;
+    <v-btn color="primary" :disabled="valid === false" @click="clickSend"> {{this.optype}} </v-btn>
     <v-btn text @click="clickBack">Back</v-btn>
 
     <!-- send result dialog -->
@@ -145,7 +145,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <div v-if="sendDialog.status===this.WAIT" class="gray--text">(This take up to 1 min)</div>
+            <div v-if="sendDialog.status===this.WAIT" class="gray--text">(This may take up to 1 min)</div>
             <v-btn
               :loading="sendDialog.status===this.WAIT"
               color="primary"
@@ -184,7 +184,7 @@
                 @click="clickApproveDialogOk"
                 color="primary"
                 :loading="approveDialog.status===this.WAIT"
-              >Send Approve Tx</v-btn>
+              >Approve</v-btn>
               <v-btn
                 text
                 :disabled="approveDialog.status===this.WAIT"
@@ -253,7 +253,7 @@ export default {
   }),
   created() {
     this.NONE = "";
-    this.WAIT = "WAIT CONFIRM";
+    this.WAIT = "PENDING CONFIRMATION";
     this.SUCCESS = "SUCCESS";
     this.FAIL = "FAIL";
   },
@@ -399,7 +399,7 @@ export default {
 
         dialog.status = this.SUCCESS;
         dialog.message =
-          "The transaction has been confirmed and included in block";
+          "Your transaction has been confirmed and is included in the block.";
         dialog.txHash = response.transactionHash;
         if (this.bridge.net.type === "aergo") {
           dialog.blockHash = response.blockHash;
@@ -424,7 +424,7 @@ export default {
         this.approveDialog.txHash = "";
         this.approveDialog.blockHash = "";
         this.approveDialog.message =
-          "Do you approve that " +
+          "Please confirm that " +
           applyDecimals(
             this.amount.sub(this.approvedAmount),
             this.bridge.asset.decimals,
@@ -432,7 +432,7 @@ export default {
           ) +
           " " +
           this.fromBridge.asset.label +
-          " is used by bridge contract?";
+          " will be used by the bridge contract.";
       } else if (!this.wallet.isLogin) {
         this.$emit("needLogin", true, this.bridge.net.type);
       }
@@ -450,7 +450,7 @@ export default {
             this.fromBridge.asset.id, //erc20addr
             this.fromBridge.asset.abi //erc20abi
           ),
-          "Waiting an approve tx. Please confirm the tx in your wallet. And wait for the tx to be confirmed."
+          "Waiting to approve. Please confirm the TX in your wallet and wait for it to be finalized."
         );
       }
     },
@@ -475,7 +475,7 @@ export default {
               this.fromBridge.contract.id,
               this.fromBridge.contract.abi
             ),
-            "Waiting a lock tx. Please confirm the tx in your wallet. And wait for the tx to be confirmed."
+            "Waiting to lock. Please confirm the TX in your wallet and wait for it to be finalized."
           );
         } else if (this.optype === "unlock") {
           // wait until transaction finished
@@ -494,7 +494,7 @@ export default {
               this.verifiedReceiver,
               this.toBridge.asset.id
             ),
-            "Waiting an unlock tx. Please confirm the tx in your wallet. And wait for the tx to be confirmed."
+            "Waiting to unlock. Please confirm the TX in your wallet and wait for it to be finalized."
           );
         } else if (this.optype == "unfreeze") {
           let builtTx = await ethToAergo.buildUnfreezeTx(
@@ -517,7 +517,7 @@ export default {
               this.toBridge.contract.id,
               builtTx
             ),
-            "Waiting an unfreeze tx. Please confirm the tx in your wallet. And wait for the tx to be confirmed."
+            "Waiting to unfreeze. Please confirm the TX in your wallet and wait for it to be finalized."
           );
         } else if (this.optype == "freeze") {
           let builtTx = await aergoToEth.buildFreezeTx(
@@ -534,7 +534,7 @@ export default {
               this.fromBridge.contract.id,
               builtTx
             ),
-            "Waiting a freeze tx. Please confirm the tx in your wallet. And wait for the tx to be confirmed."
+            "Waiting to freeze. Please confirm the TX in your wallet and wait for it to be finalized."
           );
         }
       } else {
