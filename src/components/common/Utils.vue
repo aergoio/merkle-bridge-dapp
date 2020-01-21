@@ -128,7 +128,7 @@ export async function getAergoNextVerifyToReceiver(
         if (nthAnchorHeight - anchorStatusQuery.bestHeight > 0) {
           return nthAnchorHeight - anchorStatusQuery.bestHeight;
         } else {
-          return "Soon";
+          return "Verifying";
         }
       }
     }
@@ -159,13 +159,10 @@ export async function getEthNextVerifyToReceiver(
   const contract = new web3Full.eth.Contract(bridgeEthAbi, bridgeEthAddr);
 
   let events = await contract.getPastEvents(eventName + "Event", {
-    filter: { myNumber: receiverAddress },
+    filter: { receiver: receiverAddress },
     fromBlock: fromBlock,
     toBlock: "latest"
   });
-
-  /* eslint-disable */
-  console.log("contract", events[events.length - 1].blockNumber);
 
   if (events.length === 0) {
     return "Verification is delayed";
