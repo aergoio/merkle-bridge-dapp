@@ -257,9 +257,9 @@ export default {
 
             // expected anchoring block height
             if (this.underVerifyAmountDecimalStr !== "0") {
-              this.nextVerifyBlock = results[1];
+              this.nextVerifyBlock = results[1][0];
             } else {
-              this.nextVerifyBlock = "-";
+              this.nextVerifyBlock = results[1][1];
             }
           })
           .catch(errs => {

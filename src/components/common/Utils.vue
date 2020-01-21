@@ -116,9 +116,13 @@ export async function getAergoNextVerifyToReceiver(
     blockfrom: fromBlock,
     args: args
   });
+  let nextAnchorHeight =
+    anchorStatusQuery.lastAnchorHeight +
+    anchorStatusQuery.tAnchor -
+    anchorStatusQuery.bestHeight;
 
   if (events.length === 0) {
-    return "Delayed";
+    return ["Delayed", nextAnchorHeight];
   } else {
     for (let n = 1; n < 10000; n++) {
       let nthAnchorHeight =
@@ -128,12 +132,12 @@ export async function getAergoNextVerifyToReceiver(
         if (nthAnchorHeight - anchorStatusQuery.bestHeight > 0) {
           return nthAnchorHeight - anchorStatusQuery.bestHeight;
         } else {
-          return "Verifying";
+          return ["Verifying", nextAnchorHeight];
         }
       }
     }
 
-    return "Too big anchor height";
+    return ["Too big anchor height", nextAnchorHeight];
   }
 }
 
@@ -164,8 +168,13 @@ export async function getEthNextVerifyToReceiver(
     toBlock: "latest"
   });
 
+  let nextAnchorHeight =
+    anchorStatusQuery.lastAnchorHeight +
+    anchorStatusQuery.tAnchor -
+    anchorStatusQuery.bestHeight;
+
   if (events.length === 0) {
-    return "Delayed";
+    return ["Delayed", nextAnchorHeight];
   } else {
     for (let n = 1; n < 10000; n++) {
       let nthAnchorHeight =
@@ -176,14 +185,14 @@ export async function getEthNextVerifyToReceiver(
         events[events.length - 1].blockNumber + anchorStatusQuery.tFinal
       ) {
         if (nthAnchorHeight - anchorStatusQuery.bestHeight > 0) {
-          return nthAnchorHeight - anchorStatusQuery.bestHeight;
+          return [nthAnchorHeight - anchorStatusQuery.bestHeight];
         } else {
-          return "Verifying";
+          return ["Verifying", nextAnchorHeight];
         }
       }
     }
 
-    return "Too big anchor height";
+    return "Too big anchor height", nextAnchorHeight;
   }
 }
 
