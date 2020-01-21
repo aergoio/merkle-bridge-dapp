@@ -181,7 +181,7 @@ export async function getEthNextVerifyToReceiver(
 
   const contract = new web3Full.eth.Contract(bridgeEthAbi, bridgeEthAddr);
 
-  let events = await contract.getPastEvents("anchorEvent", {
+  let events = await contract.getPastEvents(eventName + "Event", {
     topics: [, , web3Full.utils.sha3(receiverAddress)],
     fromBlock: fromBlock,
     toBlock: "latest"
