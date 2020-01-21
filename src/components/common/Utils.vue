@@ -122,6 +122,9 @@ export async function getAergoNextVerifyToReceiver(
     anchorStatusQuery.tFinal -
     anchorStatusQuery.bestHeight;
 
+  /* eslint-disable */
+  console.log("update status - event", nextAnchorHeight, anchorStatusQuery);
+
   if (nextAnchorHeight < 0) {
     nextAnchorHeight = "Verifying";
   }
@@ -129,9 +132,7 @@ export async function getAergoNextVerifyToReceiver(
   if (events.length === 0) {
     // event is not exist between fromBlock to bestHeight.
     // it represents that anchoring is delayed
-    /* eslint-disable */
 
-    console.log("update status - event", nextAnchorHeight, anchorStatusQuery);
     return ["Delayed", nextAnchorHeight];
   } else {
     for (let n = 1; n < 10000; n++) {
@@ -140,15 +141,12 @@ export async function getAergoNextVerifyToReceiver(
         n * anchorStatusQuery.tAnchor + anchorStatusQuery.lastAnchorHeight;
 
       // try to find first anchor which's height is bigger than event + finalized block no
-      if (nthAnchorHeight > events[0].blockno + anchorStatusQuery.tFinal) {
-        let remainAnchorHeight = nthAnchorHeight - anchorStatusQuery.bestHeight;
-        console.log(
-          "update status + event",
-          events,
-          remainAnchorHeight,
-          nextAnchorHeight,
-          anchorStatusQuery
-        );
+      if (nthAnchorHeight > events[0].blockno) {
+        let remainAnchorHeight =
+          nthAnchorHeight +
+          anchorStatusQuery.tFinal -
+          anchorStatusQuery.bestHeight;
+        console.log("find event", events, remainAnchorHeight);
 
         if (remainAnchorHeight > 0) {
           return [remainAnchorHeight, nextAnchorHeight];
@@ -183,9 +181,8 @@ export async function getEthNextVerifyToReceiver(
 
   const contract = new web3Full.eth.Contract(bridgeEthAbi, bridgeEthAddr);
 
-  let events = await contract.getPastEvents(eventName + "Event", {
-    //filter: { receiver: 0 },
-    topics: [ , , web3Full.utils.sha3(receiverAddress)],
+  let events = await contract.getPastEvents("anchorEvent", {
+    topics: [, , web3Full.utils.sha3(receiverAddress)],
     fromBlock: fromBlock,
     toBlock: "latest"
   });
@@ -195,6 +192,8 @@ export async function getEthNextVerifyToReceiver(
     anchorStatusQuery.tFinal -
     anchorStatusQuery.bestHeight;
 
+  console.log("update status - event", nextAnchorHeight, anchorStatusQuery);
+
   if (nextAnchorHeight < 0) {
     nextAnchorHeight = "Verifying";
   }
@@ -202,7 +201,7 @@ export async function getEthNextVerifyToReceiver(
   if (events.length === 0) {
     // event is not exist between fromBlock to bestHeight.
     // It represent that anchoring is delayed
-    console.log("update status - event", nextAnchorHeight, anchorStatusQuery);
+
     return ["Delayed", nextAnchorHeight];
   } else {
     for (let n = 1; n < 10000; n++) {
@@ -210,18 +209,13 @@ export async function getEthNextVerifyToReceiver(
         n * anchorStatusQuery.tAnchor + anchorStatusQuery.lastAnchorHeight;
 
       // try to find first anchor which's height is bigger than event + finalized block no
-      if (
-        nthAnchorHeight >
-        events[events.length - 1].blockNumber + anchorStatusQuery.tFinal
-      ) {
-        let remainAnchorHeight = nthAnchorHeight - anchorStatusQuery.bestHeight;
-        console.log(
-          "update status + event",
-          events,
-          remainAnchorHeight,
-          nextAnchorHeight,
-          anchorStatusQuery
-        );
+      if (nthAnchorHeight > events[events.length - 1].blockNumber) {
+        let remainAnchorHeight =
+          nthAnchorHeight +
+          anchorStatusQuery.tFinal -
+          anchorStatusQuery.bestHeight;
+
+        console.log("find event", events, remainAnchorHeight);
 
         if (remainAnchorHeight > 0) {
           return [remainAnchorHeight, nextAnchorHeight];
