@@ -13,9 +13,6 @@
           <v-list-item-title>Asset Contract ID</v-list-item-title>
           {{bridge.asset.id}}
         </v-list-item-content>
-        <v-btn v-clipboard="bridge.asset.id" icon v-show="bridge.asset.id">
-          <v-icon>mdi-content-copy</v-icon>
-        </v-btn>
         <v-btn
           v-if="bridge.asset.id"
           icon
@@ -33,9 +30,6 @@
           <v-list-item-title>Bridge Contract ID</v-list-item-title>
           {{bridge.contract.id}}
         </v-list-item-content>
-        <v-btn v-clipboard="bridge.contract.id" icon>
-          <v-icon>mdi-content-copy</v-icon>
-        </v-btn>
         <v-btn icon :href="bridge.net.scan + bridge.contract.id" target="_blank">
           <v-icon>mdi-launch</v-icon>
         </v-btn>
