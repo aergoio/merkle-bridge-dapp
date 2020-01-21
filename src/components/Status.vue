@@ -174,7 +174,7 @@ export default {
     },
     search() {
       if (this.$refs.form && this.$refs.form.validate()) {
-        var withdrawStatuseQuery;
+        var withdrawStatusQuery;
         var nextVerifyQuery;
 
         if (
@@ -189,7 +189,7 @@ export default {
           let web3Full = new Web3(
             new Web3.providers.HttpProvider(this.fromBridge.net.endpoint)
           );
-          withdrawStatuseQuery = ethToAergo.unfreezable(
+          withdrawStatusQuery = ethToAergo.unfreezable(
             web3Full,
             herajs,
             this.fromBridge.contract.id,
@@ -220,7 +220,7 @@ export default {
             new Web3.providers.HttpProvider(this.toBridge.net.endpoint)
           );
 
-          withdrawStatuseQuery = aergoToEth.unlockable(
+          withdrawStatusQuery = aergoToEth.unlockable(
             web3Full,
             herajs,
             this.toBridge.contract.id,
@@ -239,7 +239,7 @@ export default {
           );
         }
 
-        Promise.all([withdrawStatuseQuery, nextVerifyQuery])
+        Promise.all([withdrawStatusQuery, nextVerifyQuery])
           .then(results => {
             this.updateTime = new Date().toLocaleString();
             // verified asset info
@@ -257,13 +257,15 @@ export default {
 
             // expected anchoring block height
             if (this.underVerifyAmountDecimalStr !== "0") {
+              // if there is an under verify amount
               this.nextVerifyBlock = results[1][0];
             } else {
+              // if there is no
               this.nextVerifyBlock = results[1][1];
             }
           })
           .catch(errs => {
-            alert("The state is being processed. Please try again in a few minutes.");
+            alert("The state change is being processed. Please try again in a few minutes.");
             // eslint-disable-next-line
             console.error(errs);
           });
