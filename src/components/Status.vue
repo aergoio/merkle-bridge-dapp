@@ -101,8 +101,13 @@
 </template>
 
 <script>
-import { validateAddress, applyDecimals } from "./common/Utils";
-import { ethToAergo, utils, aergoToEth } from "eth-merkle-bridge-js";
+import {
+  validateAddress,
+  applyDecimals,
+  getEthNextVerifyToReceiver,
+  getAergoNextVerifyToReceiver
+} from "./common/Utils";
+import { ethToAergo, aergoToEth } from "eth-merkle-bridge-js";
 import { AergoClient, GrpcWebProvider } from "@herajs/client";
 import Web3 from "web3";
 
@@ -111,7 +116,7 @@ export default {
   components: {
     //
   },
-  props: ["fromBridge", "toBridge"],
+  props: ["fromBridge", "toBridge", "optype"],
   data: () => ({
     receiver: "",
     valid: false,
@@ -170,7 +175,8 @@ export default {
     search() {
       if (this.$refs.form && this.$refs.form.validate()) {
         var withdrawStatuseQuery;
-        var anchorStatusQuery;
+        var nextVerifyQuery;
+
         if (
           this.fromBridge.net.type === "ethereum" &&
           this.toBridge.net.type === "aergo"
@@ -192,10 +198,14 @@ export default {
             this.fromBridge.asset.id
           );
 
-          anchorStatusQuery = utils.getEthAnchorStatus(
+          nextVerifyQuery = getEthNextVerifyToReceiver(
             web3Full,
             herajs,
-            this.toBridge.contract.id
+            this.fromBridge.contract.id,
+            this.fromBridge.contract.abi,
+            this.toBridge.contract.id,
+            this.optype,
+            this.receiver
           );
         } else if (
           this.fromBridge.net.type === "aergo" &&
@@ -219,14 +229,17 @@ export default {
             this.toBridge.asset.id
           );
 
-          anchorStatusQuery = utils.getAergoAnchorStatus(
+          nextVerifyQuery = getAergoNextVerifyToReceiver(
             web3Full,
             herajs,
-            this.toBridge.contract.id
+            this.fromBridge.contract.id,
+            this.toBridge.contract.id,
+            this.optype,
+            this.receiver
           );
         }
 
-        Promise.all([withdrawStatuseQuery, anchorStatusQuery])
+        Promise.all([withdrawStatuseQuery, nextVerifyQuery])
           .then(results => {
             this.updateTime = new Date().toLocaleString();
             // verified asset info
@@ -243,11 +256,11 @@ export default {
             );
 
             // expected anchoring block height
-            this.nextVerifyBlock =
-              results[1].lastAnchorHeight +
-              results[1].tAnchor +
-              results[1].tFinal -
-              results[1].bestHeight;
+            if (this.underVerifyAmountDecimalStr !== "0") {
+              this.nextVerifyBlock = results[1];
+            } else {
+              this.nextVerifyBlock = "-";
+            }
           })
           .catch(errs => {
             alert(errs);

@@ -50,29 +50,33 @@ export function sendTxToAergoConnect(endpoint, contractID, builtTx) {
   return new Promise((resolve, reject) => {
     try {
       // register event handler
-      window.addEventListener("AERGO_SEND_TX_RESULT", (event) => {
-        setTimeout(async () => {
-          try {
-            if (event.detail.error) {
-              reject(event.detail.error);
-            } else {
-              let receipt = await herajs.getTransactionReceipt(
-                event.detail.hash
-              );
-              // set to new key to match with ether
-              receipt.blockNumber = receipt.blockno
-              receipt.blockHash = receipt.blockhash
-              receipt.transactionHash = event.detail.hash;
-              resolve(receipt);
+      window.addEventListener(
+        "AERGO_SEND_TX_RESULT",
+        event => {
+          setTimeout(async () => {
+            try {
+              if (event.detail.error) {
+                reject(event.detail.error);
+              } else {
+                let receipt = await herajs.getTransactionReceipt(
+                  event.detail.hash
+                );
+                // set to new key to match with ether
+                receipt.blockNumber = receipt.blockno;
+                receipt.blockHash = receipt.blockhash;
+                receipt.transactionHash = event.detail.hash;
+                resolve(receipt);
+              }
+            } catch (err) {
+              reject(err);
             }
-          } catch (err) {
-            reject(err);
-          }
-        }, 2000);
-      }, {
-        once: true
-      });
-      
+          }, 2000);
+        },
+        {
+          once: true
+        }
+      );
+
       // send build tx request
       window.postMessage({
         type: "AERGO_REQUEST",
@@ -83,6 +87,107 @@ export function sendTxToAergoConnect(endpoint, contractID, builtTx) {
       reject(err);
     }
   });
+}
+
+export async function getAergoNextVerifyToReceiver(
+  web3Full,
+  herajs,
+  bridgeAergoAddr,
+  bridgeEthAddr,
+  eventName,
+  receiverAddress
+) {
+  let anchorStatusQuery = await utils.getAergoAnchorStatus(
+    web3Full,
+    herajs,
+    bridgeEthAddr
+  );
+
+  const fromBlock =
+    anchorStatusQuery.bestHeight -
+    (anchorStatusQuery.tAnchor + anchorStatusQuery.tFinal);
+
+  let args = new Map();
+  args.set(1, receiverAddress.slice(2).toLowerCase());
+
+  let events = await herajs.getEvents({
+    address: bridgeAergoAddr,
+    eventName: eventName,
+    blockfrom: fromBlock,
+    args: args
+  });
+
+  if (events.length === 0) {
+    return "Verification is delayed";
+  } else {
+    for (let n = 1; n < 10000; n++) {
+      let nthAnchorHeight =
+        n * anchorStatusQuery.tAnchor + anchorStatusQuery.lastAnchorHeight;
+
+      if (nthAnchorHeight > events[0].blockno + anchorStatusQuery.tFinal) {
+        if (nthAnchorHeight - anchorStatusQuery.bestHeight > 0) {
+          return nthAnchorHeight - anchorStatusQuery.bestHeight;
+        } else {
+          return "Soon";
+        }
+      }
+    }
+
+    return "Too big anchor height";
+  }
+}
+
+export async function getEthNextVerifyToReceiver(
+  web3Full,
+  herajs,
+  bridgeEthAddr,
+  bridgeEthAbi,
+  bridgeAergoAddr,
+  eventName,
+  receiverAddress
+) {
+  let anchorStatusQuery = await utils.getEthAnchorStatus(
+    web3Full,
+    herajs,
+    bridgeAergoAddr
+  );
+
+  const fromBlock =
+    anchorStatusQuery.bestHeight -
+    (anchorStatusQuery.tAnchor + anchorStatusQuery.tFinal);
+
+  const contract = new web3Full.eth.Contract(bridgeEthAbi, bridgeEthAddr);
+
+  let events = await contract.getPastEvents(eventName + "Event", {
+    filter: { myNumber: receiverAddress },
+    fromBlock: fromBlock,
+    toBlock: "latest"
+  });
+
+  /* eslint-disable */
+  console.log("contract", events[events.length - 1].blockNumber);
+
+  if (events.length === 0) {
+    return "Verification is delayed";
+  } else {
+    for (let n = 1; n < 10000; n++) {
+      let nthAnchorHeight =
+        n * anchorStatusQuery.tAnchor + anchorStatusQuery.lastAnchorHeight;
+
+      if (
+        nthAnchorHeight >
+        events[events.length - 1].blockNumber + anchorStatusQuery.tFinal
+      ) {
+        if (nthAnchorHeight - anchorStatusQuery.bestHeight > 0) {
+          return nthAnchorHeight - anchorStatusQuery.bestHeight;
+        } else {
+          return "Soon";
+        }
+      }
+    }
+
+    return "Too big anchor height";
+  }
 }
 
 export default {};

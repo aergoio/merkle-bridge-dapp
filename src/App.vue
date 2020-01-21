@@ -71,6 +71,7 @@
               <Status
                 v-bind:toBridge="toBridge"
                 v-bind:fromBridge="fromBridge"
+                v-bind:optype="fromOpType"
                 @stepping="stepping"
                 @update_finalize_info="update_finalize_info"
               />
