@@ -130,7 +130,7 @@ export async function getAergoNextVerifyToReceiver(
 
       if (nthAnchorHeight > events[0].blockno + anchorStatusQuery.tFinal) {
         if (nthAnchorHeight - anchorStatusQuery.bestHeight > 0) {
-          return nthAnchorHeight - anchorStatusQuery.bestHeight;
+          return [(nthAnchorHeight - anchorStatusQuery.bestHeight), nextAnchorHeight];
         } else {
           return ["Verifying", nextAnchorHeight];
         }
@@ -185,7 +185,7 @@ export async function getEthNextVerifyToReceiver(
         events[events.length - 1].blockNumber + anchorStatusQuery.tFinal
       ) {
         if (nthAnchorHeight - anchorStatusQuery.bestHeight > 0) {
-          return [nthAnchorHeight - anchorStatusQuery.bestHeight];
+          return [(nthAnchorHeight - anchorStatusQuery.bestHeight), nextAnchorHeight];
         } else {
           return ["Verifying", nextAnchorHeight];
         }
