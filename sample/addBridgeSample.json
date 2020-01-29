@@ -1,0 +1,1417 @@
+{
+    "bridge1": {
+        "net": {
+            "label": "Aergo Testnet",
+            "type": "aergo",
+            "chainId": "testnet.aergo.io",
+            "endpoint": "https://testnet-api-http.aergo.io",
+            "scan": "https://testnet.aergoscan.io/go?q="
+        },
+        "contract": {
+            "id": "Amh76FdT5Q8rmeJxVb31GQubZ4nWQK4HzgbvE1u9jehQTXPg8Ksv",
+            "abi": {
+                "version": "0.2",
+                "language": "lua",
+                "functions": [
+                    {
+                        "name": "freeze",
+                        "payable": true,
+                        "arguments": [
+                            {
+                                "name": "receiver"
+                            },
+                            {
+                                "name": "amount"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "constructor",
+                        "arguments": [
+                            {
+                                "name": "aergoErc20"
+                            },
+                            {
+                                "name": "validators"
+                            },
+                            {
+                                "name": "tAnchor"
+                            },
+                            {
+                                "name": "tFinal"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "default",
+                        "payable": true,
+                        "arguments": []
+                    },
+                    {
+                        "name": "validatorsUpdate",
+                        "arguments": [
+                            {
+                                "name": "validators"
+                            },
+                            {
+                                "name": "signers"
+                            },
+                            {
+                                "name": "signatures"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "unfreeze",
+                        "arguments": [
+                            {
+                                "name": "receiver"
+                            },
+                            {
+                                "name": "balance"
+                            },
+                            {
+                                "name": "merkleProof"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "unlock",
+                        "arguments": [
+                            {
+                                "name": "receiver"
+                            },
+                            {
+                                "name": "balance"
+                            },
+                            {
+                                "name": "tokenAddress"
+                            },
+                            {
+                                "name": "merkleProof"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "burn",
+                        "arguments": [
+                            {
+                                "name": "receiver"
+                            },
+                            {
+                                "name": "amount"
+                            },
+                            {
+                                "name": "mintAddress"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "tokensReceived",
+                        "arguments": [
+                            {
+                                "name": "operator"
+                            },
+                            {
+                                "name": "from"
+                            },
+                            {
+                                "name": "value"
+                            },
+                            {
+                                "name": "receiver"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "mint",
+                        "arguments": [
+                            {
+                                "name": "receiver"
+                            },
+                            {
+                                "name": "balance"
+                            },
+                            {
+                                "name": "tokenOrigin"
+                            },
+                            {
+                                "name": "merkleProof"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "unfreezeFeeUpdate",
+                        "arguments": [
+                            {
+                                "name": "fee"
+                            },
+                            {
+                                "name": "signers"
+                            },
+                            {
+                                "name": "signatures"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "newAnchor",
+                        "arguments": [
+                            {
+                                "name": "root"
+                            },
+                            {
+                                "name": "height"
+                            },
+                            {
+                                "name": "signers"
+                            },
+                            {
+                                "name": "signatures"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "tAnchorUpdate",
+                        "arguments": [
+                            {
+                                "name": "tAnchor"
+                            },
+                            {
+                                "name": "signers"
+                            },
+                            {
+                                "name": "signatures"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "tFinalUpdate",
+                        "arguments": [
+                            {
+                                "name": "tFinal"
+                            },
+                            {
+                                "name": "signers"
+                            },
+                            {
+                                "name": "signatures"
+                            }
+                        ]
+                    }
+                ],
+                "state_variables": [
+                    {
+                        "name": "_unfreezes",
+                        "type": "map"
+                    },
+                    {
+                        "name": "_mintedTokens",
+                        "type": "map"
+                    },
+                    {
+                        "name": "_validators",
+                        "type": "map"
+                    },
+                    {
+                        "name": "_locks",
+                        "type": "map"
+                    },
+                    {
+                        "name": "_mints",
+                        "type": "map"
+                    },
+                    {
+                        "name": "_bridgeTokens",
+                        "type": "map"
+                    },
+                    {
+                        "name": "_aergoErc20Bytes",
+                        "type": "value"
+                    },
+                    {
+                        "name": "_tAnchor",
+                        "type": "value"
+                    },
+                    {
+                        "name": "_unfreezeFee",
+                        "type": "value"
+                    },
+                    {
+                        "name": "_burns",
+                        "type": "map"
+                    },
+                    {
+                        "name": "_validatorsCount",
+                        "type": "value"
+                    },
+                    {
+                        "name": "_contractId",
+                        "type": "value"
+                    },
+                    {
+                        "name": "_anchorRoot",
+                        "type": "value"
+                    },
+                    {
+                        "name": "_anchorHeight",
+                        "type": "value"
+                    },
+                    {
+                        "name": "_tFinal",
+                        "type": "value"
+                    },
+                    {
+                        "name": "_nonce",
+                        "type": "value"
+                    },
+                    {
+                        "name": "_unlocks",
+                        "type": "map"
+                    }
+                ]
+            }
+        },
+        "asset": {
+            "label": "Native Aergo",
+            "type": "native",
+            "isPegged": false,
+            "id": "",
+            "decimals": 18
+        }
+    },
+    "bridge2": {
+        "net": {
+            "label": "Ethereum Testnet",
+            "type": "ethereum",
+            "networkVersion": "3",
+            "endpoint": "https://ethtestnet.aergo.io/",
+            "scan": "https://ropsten.etherscan.io/search?q="
+        },
+        "contract": {
+            "id": "0xd6d81a49527ec42Ed5E5a60B86F316E683991116",
+            "abi": [
+                {
+                    "inputs": [
+                        {
+                            "internalType": "uint256",
+                            "name": "tAnchor",
+                            "type": "uint256"
+                        },
+                        {
+                            "internalType": "uint256",
+                            "name": "tFinal",
+                            "type": "uint256"
+                        }
+                    ],
+                    "payable": false,
+                    "stateMutability": "nonpayable",
+                    "type": "constructor"
+                },
+                {
+                    "anonymous": false,
+                    "inputs": [
+                        {
+                            "indexed": true,
+                            "internalType": "address",
+                            "name": "sender",
+                            "type": "address"
+                        },
+                        {
+                            "indexed": false,
+                            "internalType": "bytes32",
+                            "name": "root",
+                            "type": "bytes32"
+                        },
+                        {
+                            "indexed": false,
+                            "internalType": "uint256",
+                            "name": "height",
+                            "type": "uint256"
+                        }
+                    ],
+                    "name": "anchorEvent",
+                    "type": "event"
+                },
+                {
+                    "anonymous": false,
+                    "inputs": [
+                        {
+                            "indexed": true,
+                            "internalType": "address",
+                            "name": "sender",
+                            "type": "address"
+                        },
+                        {
+                            "indexed": true,
+                            "internalType": "contract MintedERC20",
+                            "name": "tokenAddress",
+                            "type": "address"
+                        },
+                        {
+                            "indexed": true,
+                            "internalType": "string",
+                            "name": "receiver",
+                            "type": "string"
+                        },
+                        {
+                            "indexed": false,
+                            "internalType": "uint256",
+                            "name": "amount",
+                            "type": "uint256"
+                        }
+                    ],
+                    "name": "burnEvent",
+                    "type": "event"
+                },
+                {
+                    "anonymous": false,
+                    "inputs": [
+                        {
+                            "indexed": true,
+                            "internalType": "address",
+                            "name": "sender",
+                            "type": "address"
+                        },
+                        {
+                            "indexed": true,
+                            "internalType": "contract IERC20",
+                            "name": "tokenAddress",
+                            "type": "address"
+                        },
+                        {
+                            "indexed": true,
+                            "internalType": "string",
+                            "name": "receiver",
+                            "type": "string"
+                        },
+                        {
+                            "indexed": false,
+                            "internalType": "uint256",
+                            "name": "amount",
+                            "type": "uint256"
+                        }
+                    ],
+                    "name": "lockEvent",
+                    "type": "event"
+                },
+                {
+                    "anonymous": false,
+                    "inputs": [
+                        {
+                            "indexed": true,
+                            "internalType": "address",
+                            "name": "sender",
+                            "type": "address"
+                        },
+                        {
+                            "indexed": true,
+                            "internalType": "contract MintedERC20",
+                            "name": "tokenAddress",
+                            "type": "address"
+                        },
+                        {
+                            "indexed": true,
+                            "internalType": "address",
+                            "name": "receiver",
+                            "type": "address"
+                        },
+                        {
+                            "indexed": false,
+                            "internalType": "uint256",
+                            "name": "amount",
+                            "type": "uint256"
+                        }
+                    ],
+                    "name": "mintEvent",
+                    "type": "event"
+                },
+                {
+                    "anonymous": false,
+                    "inputs": [
+                        {
+                            "indexed": true,
+                            "internalType": "string",
+                            "name": "origin",
+                            "type": "string"
+                        },
+                        {
+                            "indexed": true,
+                            "internalType": "contract MintedERC20",
+                            "name": "addr",
+                            "type": "address"
+                        }
+                    ],
+                    "name": "newMintedERC20",
+                    "type": "event"
+                },
+                {
+                    "anonymous": false,
+                    "inputs": [
+                        {
+                            "indexed": true,
+                            "internalType": "address",
+                            "name": "sender",
+                            "type": "address"
+                        },
+                        {
+                            "indexed": false,
+                            "internalType": "address",
+                            "name": "newOracle",
+                            "type": "address"
+                        }
+                    ],
+                    "name": "newOracleEvent",
+                    "type": "event"
+                },
+                {
+                    "anonymous": false,
+                    "inputs": [
+                        {
+                            "indexed": true,
+                            "internalType": "address",
+                            "name": "sender",
+                            "type": "address"
+                        },
+                        {
+                            "indexed": false,
+                            "internalType": "uint256",
+                            "name": "tAnchor",
+                            "type": "uint256"
+                        }
+                    ],
+                    "name": "newTAnchorEvent",
+                    "type": "event"
+                },
+                {
+                    "anonymous": false,
+                    "inputs": [
+                        {
+                            "indexed": true,
+                            "internalType": "address",
+                            "name": "sender",
+                            "type": "address"
+                        },
+                        {
+                            "indexed": false,
+                            "internalType": "uint256",
+                            "name": "tFinal",
+                            "type": "uint256"
+                        }
+                    ],
+                    "name": "newTFinalEvent",
+                    "type": "event"
+                },
+                {
+                    "anonymous": false,
+                    "inputs": [
+                        {
+                            "indexed": true,
+                            "internalType": "address",
+                            "name": "sender",
+                            "type": "address"
+                        },
+                        {
+                            "indexed": true,
+                            "internalType": "contract IERC20",
+                            "name": "tokenAddress",
+                            "type": "address"
+                        },
+                        {
+                            "indexed": true,
+                            "internalType": "address",
+                            "name": "receiver",
+                            "type": "address"
+                        },
+                        {
+                            "indexed": false,
+                            "internalType": "uint256",
+                            "name": "amount",
+                            "type": "uint256"
+                        }
+                    ],
+                    "name": "unlockEvent",
+                    "type": "event"
+                },
+                {
+                    "constant": true,
+                    "inputs": [],
+                    "name": "_anchorHeight",
+                    "outputs": [
+                        {
+                            "internalType": "uint256",
+                            "name": "",
+                            "type": "uint256"
+                        }
+                    ],
+                    "payable": false,
+                    "stateMutability": "view",
+                    "type": "function"
+                },
+                {
+                    "constant": true,
+                    "inputs": [],
+                    "name": "_anchorRoot",
+                    "outputs": [
+                        {
+                            "internalType": "bytes32",
+                            "name": "",
+                            "type": "bytes32"
+                        }
+                    ],
+                    "payable": false,
+                    "stateMutability": "view",
+                    "type": "function"
+                },
+                {
+                    "constant": true,
+                    "inputs": [
+                        {
+                            "internalType": "string",
+                            "name": "",
+                            "type": "string"
+                        }
+                    ],
+                    "name": "_bridgeTokens",
+                    "outputs": [
+                        {
+                            "internalType": "contract MintedERC20",
+                            "name": "",
+                            "type": "address"
+                        }
+                    ],
+                    "payable": false,
+                    "stateMutability": "view",
+                    "type": "function"
+                },
+                {
+                    "constant": true,
+                    "inputs": [
+                        {
+                            "internalType": "bytes",
+                            "name": "",
+                            "type": "bytes"
+                        }
+                    ],
+                    "name": "_burns",
+                    "outputs": [
+                        {
+                            "internalType": "uint256",
+                            "name": "",
+                            "type": "uint256"
+                        }
+                    ],
+                    "payable": false,
+                    "stateMutability": "view",
+                    "type": "function"
+                },
+                {
+                    "constant": true,
+                    "inputs": [
+                        {
+                            "internalType": "bytes",
+                            "name": "",
+                            "type": "bytes"
+                        }
+                    ],
+                    "name": "_locks",
+                    "outputs": [
+                        {
+                            "internalType": "uint256",
+                            "name": "",
+                            "type": "uint256"
+                        }
+                    ],
+                    "payable": false,
+                    "stateMutability": "view",
+                    "type": "function"
+                },
+                {
+                    "constant": true,
+                    "inputs": [
+                        {
+                            "internalType": "address",
+                            "name": "",
+                            "type": "address"
+                        }
+                    ],
+                    "name": "_mintedTokens",
+                    "outputs": [
+                        {
+                            "internalType": "string",
+                            "name": "",
+                            "type": "string"
+                        }
+                    ],
+                    "payable": false,
+                    "stateMutability": "view",
+                    "type": "function"
+                },
+                {
+                    "constant": true,
+                    "inputs": [
+                        {
+                            "internalType": "bytes",
+                            "name": "",
+                            "type": "bytes"
+                        }
+                    ],
+                    "name": "_mints",
+                    "outputs": [
+                        {
+                            "internalType": "uint256",
+                            "name": "",
+                            "type": "uint256"
+                        }
+                    ],
+                    "payable": false,
+                    "stateMutability": "view",
+                    "type": "function"
+                },
+                {
+                    "constant": true,
+                    "inputs": [],
+                    "name": "_oracle",
+                    "outputs": [
+                        {
+                            "internalType": "address",
+                            "name": "",
+                            "type": "address"
+                        }
+                    ],
+                    "payable": false,
+                    "stateMutability": "view",
+                    "type": "function"
+                },
+                {
+                    "constant": true,
+                    "inputs": [],
+                    "name": "_tAnchor",
+                    "outputs": [
+                        {
+                            "internalType": "uint256",
+                            "name": "",
+                            "type": "uint256"
+                        }
+                    ],
+                    "payable": false,
+                    "stateMutability": "view",
+                    "type": "function"
+                },
+                {
+                    "constant": true,
+                    "inputs": [],
+                    "name": "_tFinal",
+                    "outputs": [
+                        {
+                            "internalType": "uint256",
+                            "name": "",
+                            "type": "uint256"
+                        }
+                    ],
+                    "payable": false,
+                    "stateMutability": "view",
+                    "type": "function"
+                },
+                {
+                    "constant": true,
+                    "inputs": [
+                        {
+                            "internalType": "bytes",
+                            "name": "",
+                            "type": "bytes"
+                        }
+                    ],
+                    "name": "_unlocks",
+                    "outputs": [
+                        {
+                            "internalType": "uint256",
+                            "name": "",
+                            "type": "uint256"
+                        }
+                    ],
+                    "payable": false,
+                    "stateMutability": "view",
+                    "type": "function"
+                },
+                {
+                    "constant": true,
+                    "inputs": [
+                        {
+                            "internalType": "bytes32",
+                            "name": "bits",
+                            "type": "bytes32"
+                        },
+                        {
+                            "internalType": "uint8",
+                            "name": "i",
+                            "type": "uint8"
+                        }
+                    ],
+                    "name": "bitIsSet",
+                    "outputs": [
+                        {
+                            "internalType": "bool",
+                            "name": "",
+                            "type": "bool"
+                        }
+                    ],
+                    "payable": false,
+                    "stateMutability": "pure",
+                    "type": "function"
+                },
+                {
+                    "constant": false,
+                    "inputs": [
+                        {
+                            "internalType": "string",
+                            "name": "receiver",
+                            "type": "string"
+                        },
+                        {
+                            "internalType": "uint256",
+                            "name": "amount",
+                            "type": "uint256"
+                        },
+                        {
+                            "internalType": "contract MintedERC20",
+                            "name": "mintAddress",
+                            "type": "address"
+                        }
+                    ],
+                    "name": "burn",
+                    "outputs": [
+                        {
+                            "internalType": "bool",
+                            "name": "",
+                            "type": "bool"
+                        }
+                    ],
+                    "payable": false,
+                    "stateMutability": "nonpayable",
+                    "type": "function"
+                },
+                {
+                    "constant": false,
+                    "inputs": [
+                        {
+                            "internalType": "contract IERC20",
+                            "name": "token",
+                            "type": "address"
+                        },
+                        {
+                            "internalType": "uint256",
+                            "name": "amount",
+                            "type": "uint256"
+                        },
+                        {
+                            "internalType": "string",
+                            "name": "receiver",
+                            "type": "string"
+                        }
+                    ],
+                    "name": "lock",
+                    "outputs": [
+                        {
+                            "internalType": "bool",
+                            "name": "",
+                            "type": "bool"
+                        }
+                    ],
+                    "payable": false,
+                    "stateMutability": "nonpayable",
+                    "type": "function"
+                },
+                {
+                    "constant": false,
+                    "inputs": [
+                        {
+                            "internalType": "address",
+                            "name": "receiver",
+                            "type": "address"
+                        },
+                        {
+                            "internalType": "uint256",
+                            "name": "balance",
+                            "type": "uint256"
+                        },
+                        {
+                            "internalType": "string",
+                            "name": "tokenOrigin",
+                            "type": "string"
+                        },
+                        {
+                            "internalType": "bytes32[]",
+                            "name": "mp",
+                            "type": "bytes32[]"
+                        },
+                        {
+                            "internalType": "bytes32",
+                            "name": "bitmap",
+                            "type": "bytes32"
+                        },
+                        {
+                            "internalType": "uint8",
+                            "name": "leafHeight",
+                            "type": "uint8"
+                        }
+                    ],
+                    "name": "mint",
+                    "outputs": [
+                        {
+                            "internalType": "bool",
+                            "name": "",
+                            "type": "bool"
+                        }
+                    ],
+                    "payable": false,
+                    "stateMutability": "nonpayable",
+                    "type": "function"
+                },
+                {
+                    "constant": false,
+                    "inputs": [
+                        {
+                            "internalType": "bytes32",
+                            "name": "root",
+                            "type": "bytes32"
+                        },
+                        {
+                            "internalType": "uint256",
+                            "name": "height",
+                            "type": "uint256"
+                        }
+                    ],
+                    "name": "newAnchor",
+                    "outputs": [],
+                    "payable": false,
+                    "stateMutability": "nonpayable",
+                    "type": "function"
+                },
+                {
+                    "constant": false,
+                    "inputs": [
+                        {
+                            "internalType": "address",
+                            "name": "newOracle",
+                            "type": "address"
+                        }
+                    ],
+                    "name": "oracleUpdate",
+                    "outputs": [],
+                    "payable": false,
+                    "stateMutability": "nonpayable",
+                    "type": "function"
+                },
+                {
+                    "constant": false,
+                    "inputs": [
+                        {
+                            "internalType": "uint256",
+                            "name": "tAnchor",
+                            "type": "uint256"
+                        }
+                    ],
+                    "name": "tAnchorUpdate",
+                    "outputs": [],
+                    "payable": false,
+                    "stateMutability": "nonpayable",
+                    "type": "function"
+                },
+                {
+                    "constant": false,
+                    "inputs": [
+                        {
+                            "internalType": "uint256",
+                            "name": "tFinal",
+                            "type": "uint256"
+                        }
+                    ],
+                    "name": "tFinalUpdate",
+                    "outputs": [],
+                    "payable": false,
+                    "stateMutability": "nonpayable",
+                    "type": "function"
+                },
+                {
+                    "constant": true,
+                    "inputs": [
+                        {
+                            "internalType": "uint256",
+                            "name": "num",
+                            "type": "uint256"
+                        }
+                    ],
+                    "name": "uintToString",
+                    "outputs": [
+                        {
+                            "internalType": "string",
+                            "name": "",
+                            "type": "string"
+                        }
+                    ],
+                    "payable": false,
+                    "stateMutability": "pure",
+                    "type": "function"
+                },
+                {
+                    "constant": false,
+                    "inputs": [
+                        {
+                            "internalType": "address",
+                            "name": "receiver",
+                            "type": "address"
+                        },
+                        {
+                            "internalType": "uint256",
+                            "name": "balance",
+                            "type": "uint256"
+                        },
+                        {
+                            "internalType": "contract IERC20",
+                            "name": "token",
+                            "type": "address"
+                        },
+                        {
+                            "internalType": "bytes32[]",
+                            "name": "mp",
+                            "type": "bytes32[]"
+                        },
+                        {
+                            "internalType": "bytes32",
+                            "name": "bitmap",
+                            "type": "bytes32"
+                        },
+                        {
+                            "internalType": "uint8",
+                            "name": "leafHeight",
+                            "type": "uint8"
+                        }
+                    ],
+                    "name": "unlock",
+                    "outputs": [
+                        {
+                            "internalType": "bool",
+                            "name": "",
+                            "type": "bool"
+                        }
+                    ],
+                    "payable": false,
+                    "stateMutability": "nonpayable",
+                    "type": "function"
+                },
+                {
+                    "constant": true,
+                    "inputs": [
+                        {
+                            "internalType": "string",
+                            "name": "mapName",
+                            "type": "string"
+                        },
+                        {
+                            "internalType": "bytes",
+                            "name": "accountRef",
+                            "type": "bytes"
+                        },
+                        {
+                            "internalType": "uint256",
+                            "name": "balance",
+                            "type": "uint256"
+                        },
+                        {
+                            "internalType": "bytes32[]",
+                            "name": "mp",
+                            "type": "bytes32[]"
+                        },
+                        {
+                            "internalType": "bytes32",
+                            "name": "bitmap",
+                            "type": "bytes32"
+                        },
+                        {
+                            "internalType": "uint8",
+                            "name": "leafHeight",
+                            "type": "uint8"
+                        }
+                    ],
+                    "name": "verifyDepositProof",
+                    "outputs": [
+                        {
+                            "internalType": "bool",
+                            "name": "",
+                            "type": "bool"
+                        }
+                    ],
+                    "payable": false,
+                    "stateMutability": "view",
+                    "type": "function"
+                }
+            ]
+        },
+        "asset": {
+            "label": "erc20 aergo",
+            "type": "erc20",
+            "isPegged": false,
+            "id": "0x9b132615129867f747C26e58FEcdea8eF2b55Bb2",
+            "abi": [
+                {
+                    "constant": true,
+                    "inputs": [],
+                    "name": "name",
+                    "outputs": [
+                        {
+                            "name": "",
+                            "type": "string"
+                        }
+                    ],
+                    "payable": false,
+                    "stateMutability": "view",
+                    "type": "function"
+                },
+                {
+                    "constant": false,
+                    "inputs": [
+                        {
+                            "name": "_spender",
+                            "type": "address"
+                        },
+                        {
+                            "name": "_value",
+                            "type": "uint256"
+                        }
+                    ],
+                    "name": "approve",
+                    "outputs": [
+                        {
+                            "name": "",
+                            "type": "bool"
+                        }
+                    ],
+                    "payable": false,
+                    "stateMutability": "nonpayable",
+                    "type": "function"
+                },
+                {
+                    "constant": true,
+                    "inputs": [],
+                    "name": "totalSupply",
+                    "outputs": [
+                        {
+                            "name": "",
+                            "type": "uint256"
+                        }
+                    ],
+                    "payable": false,
+                    "stateMutability": "view",
+                    "type": "function"
+                },
+                {
+                    "constant": false,
+                    "inputs": [
+                        {
+                            "name": "_from",
+                            "type": "address"
+                        },
+                        {
+                            "name": "_to",
+                            "type": "address"
+                        },
+                        {
+                            "name": "_value",
+                            "type": "uint256"
+                        }
+                    ],
+                    "name": "transferFrom",
+                    "outputs": [
+                        {
+                            "name": "",
+                            "type": "bool"
+                        }
+                    ],
+                    "payable": false,
+                    "stateMutability": "nonpayable",
+                    "type": "function"
+                },
+                {
+                    "constant": true,
+                    "inputs": [],
+                    "name": "decimals",
+                    "outputs": [
+                        {
+                            "name": "",
+                            "type": "uint8"
+                        }
+                    ],
+                    "payable": false,
+                    "stateMutability": "view",
+                    "type": "function"
+                },
+                {
+                    "constant": false,
+                    "inputs": [],
+                    "name": "unpause",
+                    "outputs": [],
+                    "payable": false,
+                    "stateMutability": "nonpayable",
+                    "type": "function"
+                },
+                {
+                    "constant": true,
+                    "inputs": [],
+                    "name": "paused",
+                    "outputs": [
+                        {
+                            "name": "",
+                            "type": "bool"
+                        }
+                    ],
+                    "payable": false,
+                    "stateMutability": "view",
+                    "type": "function"
+                },
+                {
+                    "constant": false,
+                    "inputs": [
+                        {
+                            "name": "_spender",
+                            "type": "address"
+                        },
+                        {
+                            "name": "_subtractedValue",
+                            "type": "uint256"
+                        }
+                    ],
+                    "name": "decreaseApproval",
+                    "outputs": [
+                        {
+                            "name": "success",
+                            "type": "bool"
+                        }
+                    ],
+                    "payable": false,
+                    "stateMutability": "nonpayable",
+                    "type": "function"
+                },
+                {
+                    "constant": true,
+                    "inputs": [
+                        {
+                            "name": "_owner",
+                            "type": "address"
+                        }
+                    ],
+                    "name": "balanceOf",
+                    "outputs": [
+                        {
+                            "name": "",
+                            "type": "uint256"
+                        }
+                    ],
+                    "payable": false,
+                    "stateMutability": "view",
+                    "type": "function"
+                },
+                {
+                    "constant": false,
+                    "inputs": [],
+                    "name": "pause",
+                    "outputs": [],
+                    "payable": false,
+                    "stateMutability": "nonpayable",
+                    "type": "function"
+                },
+                {
+                    "constant": true,
+                    "inputs": [],
+                    "name": "owner",
+                    "outputs": [
+                        {
+                            "name": "",
+                            "type": "address"
+                        }
+                    ],
+                    "payable": false,
+                    "stateMutability": "view",
+                    "type": "function"
+                },
+                {
+                    "constant": true,
+                    "inputs": [],
+                    "name": "symbol",
+                    "outputs": [
+                        {
+                            "name": "",
+                            "type": "string"
+                        }
+                    ],
+                    "payable": false,
+                    "stateMutability": "view",
+                    "type": "function"
+                },
+                {
+                    "constant": false,
+                    "inputs": [
+                        {
+                            "name": "_to",
+                            "type": "address"
+                        },
+                        {
+                            "name": "_value",
+                            "type": "uint256"
+                        }
+                    ],
+                    "name": "transfer",
+                    "outputs": [
+                        {
+                            "name": "",
+                            "type": "bool"
+                        }
+                    ],
+                    "payable": false,
+                    "stateMutability": "nonpayable",
+                    "type": "function"
+                },
+                {
+                    "constant": false,
+                    "inputs": [
+                        {
+                            "name": "_spender",
+                            "type": "address"
+                        },
+                        {
+                            "name": "_addedValue",
+                            "type": "uint256"
+                        }
+                    ],
+                    "name": "increaseApproval",
+                    "outputs": [
+                        {
+                            "name": "success",
+                            "type": "bool"
+                        }
+                    ],
+                    "payable": false,
+                    "stateMutability": "nonpayable",
+                    "type": "function"
+                },
+                {
+                    "constant": true,
+                    "inputs": [
+                        {
+                            "name": "_owner",
+                            "type": "address"
+                        },
+                        {
+                            "name": "_spender",
+                            "type": "address"
+                        }
+                    ],
+                    "name": "allowance",
+                    "outputs": [
+                        {
+                            "name": "",
+                            "type": "uint256"
+                        }
+                    ],
+                    "payable": false,
+                    "stateMutability": "view",
+                    "type": "function"
+                },
+                {
+                    "constant": false,
+                    "inputs": [
+                        {
+                            "name": "newOwner",
+                            "type": "address"
+                        }
+                    ],
+                    "name": "transferOwnership",
+                    "outputs": [],
+                    "payable": false,
+                    "stateMutability": "nonpayable",
+                    "type": "function"
+                },
+                {
+                    "inputs": [],
+                    "payable": false,
+                    "stateMutability": "nonpayable",
+                    "type": "constructor"
+                },
+                {
+                    "anonymous": false,
+                    "inputs": [],
+                    "name": "Pause",
+                    "type": "event"
+                },
+                {
+                    "anonymous": false,
+                    "inputs": [],
+                    "name": "Unpause",
+                    "type": "event"
+                },
+                {
+                    "anonymous": false,
+                    "inputs": [
+                        {
+                            "indexed": true,
+                            "name": "previousOwner",
+                            "type": "address"
+                        },
+                        {
+                            "indexed": true,
+                            "name": "newOwner",
+                            "type": "address"
+                        }
+                    ],
+                    "name": "OwnershipTransferred",
+                    "type": "event"
+                },
+                {
+                    "anonymous": false,
+                    "inputs": [
+                        {
+                            "indexed": true,
+                            "name": "owner",
+                            "type": "address"
+                        },
+                        {
+                            "indexed": true,
+                            "name": "spender",
+                            "type": "address"
+                        },
+                        {
+                            "indexed": false,
+                            "name": "value",
+                            "type": "uint256"
+                        }
+                    ],
+                    "name": "Approval",
+                    "type": "event"
+                },
+                {
+                    "anonymous": false,
+                    "inputs": [
+                        {
+                            "indexed": true,
+                            "name": "from",
+                            "type": "address"
+                        },
+                        {
+                            "indexed": true,
+                            "name": "to",
+                            "type": "address"
+                        },
+                        {
+                            "indexed": false,
+                            "name": "value",
+                            "type": "uint256"
+                        }
+                    ],
+                    "name": "Transfer",
+                    "type": "event"
+                }
+            ],
+            "decimals": 18
+        }
+    }
+}
