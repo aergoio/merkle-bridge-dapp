@@ -167,14 +167,14 @@ v.addSchema(bridgeTemplate, "/Bridge");
 export function validateBridge(newBridge) {
   let result = v.validate(newBridge, template);
   
-  return (
-    result.valid,
-    result.errors
+  return {
+    valid: result.valid,
+    errors: result.errors
       .map(function(elem) {
         return elem.stack;
       })
       .join(", ")
-  );
+  };
 }
 
 export default {};

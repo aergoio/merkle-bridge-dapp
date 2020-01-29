@@ -152,13 +152,14 @@ export default {
     },
     validateBridgeFile() {
       if (this.addDialog.fileContent) {
-        let valid,
-          errors = validateBridge(this.addDialog.fileContent);
-        this.addDialog.isOk = valid;
-        if (valid) {
+        let result = validateBridge(this.addDialog.fileContent);
+          
+        this.addDialog.isOk = result.valid;
+        
+        if (result.valid) {
           return true;
         } else {
-          return errors;
+          return result.errors;
         }
       }
       this.addDialog.isOk = false;
