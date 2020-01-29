@@ -31,7 +31,8 @@ yarn run serve
 yarn run build
 ```
 
-Build artifacts are generated in the `docs` folder.
+Build artifacts are generated in the `docs` folder. When you push it to github, that folder is currently automatically served through the github page. 
+When building, the CNAME is deleted. If you delete the CNAME, the domain setting is deleted, so `you should not delete docs/CNAME file on git.`
 
 ## How to Use DApp
 
@@ -114,3 +115,10 @@ Withdraw the Native Aergo deposited in the Merkle Bridge DApp on the Aergo netwo
 1. Click on the account you would like to use in your Aergo Connect wallet and authorize it. (The login account does not need to be same as an account to receive. However, since you need to create a transaction to unfreeze, the account need to have some Aergo)
 1. Check the preset information set and click a `Send Unfreeze Tx` button
 1. Confirm the transaction in Aergo Connect Wallet
+
+## Cautions for Development
+
+* If you look up a state older than 128 blocks in Ethereum, you will get a missing trie error. To prevent this, `use archive node` when running ethereum full node
+* By `unlocking services`, steps 3 and 4 to withdraw assets can be automated and removed. This makes the process as simple as an existing swap service
+* We need a historic status page. This requires collecting and processing events and states from both chains.
+* This dapp is an example for transmitting an asset using a merkle bridge. It can be extended to other applications such as authentication
