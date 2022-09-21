@@ -14,7 +14,7 @@
     "jsonschema": "^1.2.5",
     "v-clipboard": "^2.2.2",
     "vue": "^2.6.10",
-    "vuetify": "^2.0.18",
+    "vuetify": "^2.6.10",
     "web3": "^2.0.0-alpha.1"
   },
   "devDependencies": {
